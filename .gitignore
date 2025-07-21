@@ -2687,3 +2687,9 @@
 /.idea/modules.xml
 /.idea/vcs.xml
 /.bundle/config
+_site/
+vendor/
+.bundle/
+.DS_Store
+*.log
+jekyll.log
