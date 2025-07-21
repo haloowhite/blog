@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>
+        {% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}
+    </title>
+    <meta
+            name="description"
+            content="White: {% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
+    />
+
+    <!-- Google Fonts -->
+    <link
+            rel="preconnect" 
+            href="https://fonts.googleapis.com"
+    />
+    <link 
+            rel="preconnect" 
+            href="https://fonts.gstatic.com" 
+            crossorigin
+    />
+<!--    <link-->
+<!--            href="https://fonts.googleapis.com/css2?family=Flow+Circular:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap"-->
+<!--            rel="stylesheet"-->
+<!--    />-->
+    
+    <link
+            rel="stylesheet"
+            href="{{ '/assets/css/main.css' | relative_url }}"
+    />
+    <link
+            rel="canonical"
+            href="{{ page.url | replace:'index.html','' | absolute_url }}"
+    />
+
+    <!-- Open Graph -->
+    <meta
+            property="og:title"
+            content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}"
+    />
+    <meta
+            property="og:description"
+            content="White: {% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
+    />
+    <meta
+            property="og:type"
+            content="{% if page.date %}article{% else %}website{% endif %}"
+    />
+    <meta property="og:url" content="{{ page.url | absolute_url }}"/>
+    <meta
+            property="og:image"
+            content="{{ '/assets/images/feynman.jpg' | absolute_url }}"
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta
+            name="twitter:title"
+            content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}"
+    />
+    <meta
+            name="twitter:description"
+            content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
+    />
+    <meta
+            name="twitter:image"
+            content="{{ '/assets/images/feynman.jpg' | absolute_url }}"
+    />
+
+    <!-- Font Awesome Icons -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <!-- RSS Feed -->
+    <link
+            type="application/atom+xml"
+            rel="alternate"
+            href="{{ '/feed.xml' | absolute_url }}"
+            title="{{ site.title }}"
+    />
+</head>
+<body>
+<div class="site-container">
+    <!-- 左侧边栏 -->
+    <aside class="sidebar">
+        <h1 class="author-name">{{ site.author }}</h1>
+        <p class="author-title">{{ site.description }}</p>
+        <img
+                src="{{ '/assets/images/feynman.jpg' | relative_url }}"
+                alt="Richard Feynman"
+                class="author-photo"
+        />
+        <div class="social-links">
+            <a
+                    href="https://github.com/Upsetin"
+                    target="_blank"
+                    class="social-icon"
+            ><i class="fa-brands fa-github"></i></a
+            >
+            <a
+                    href="https://t.me/haloowhite"
+                    target="_blank"
+                    class="social-icon"
+            ><i class="fa-brands fa-telegram"></i></a
+            >
+            <a href="https://x.com/{{ site.social.twitter }}" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+    </aside>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 导航栏 -->
+        <nav class="nav-header">
+            <ul class="nav-menu">
+                <li>
+                    <a href="{{ '/' | relative_url }}"
+                       {% if page.url=="/" %}class="active"
+                       {% endif %}
+                    >Home</a
+                    >
+                </li>
+                <li>
+                    <a href="{{ '/archive/' | relative_url }}"
+                       {% if page.url=="/archive/" %}class="active" {% endif %}
+                    >Archive</a
+                    >
+                </li>
+                <li>
+                    <a class="active" href="https://t.me/haloowhite">Contact</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 页面内容 -->
+        {{ content }}
+    </main>
+</div>
+</body>
+</html>
