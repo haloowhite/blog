@@ -1,0 +1,55 @@
+---
+layout: default
+title: White's Blog
+---
+
+<!-- Featured Articles Section -->
+<section class="featured-articles">
+    <h2 class="section-title">Featured Articles</h2>
+    <div class="article-list">
+        {% assign sorted_posts = site.posts | sort: 'date' | reverse %}
+        {% for post in sorted_posts limit:5 %}
+        <article class="article-item">
+            <h3 class="article-title">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+            </h3>
+            <div class="article-meta">
+                {{ post.date | date: "%Y年%m月%d日" }}
+                {% if post.categories %}
+                - {{ post.categories | join: ", " }}
+                {% endif %}
+            </div>
+            <div class="arrow-icon"></div>
+        </article>
+        {% endfor %}
+        
+        {% if site.posts.size == 0 %}
+        <article class="article-item">
+            <h3 class="article-title">
+                <a href="#">Welcome to White's Graden</a>
+            </h3>
+            <div class="article-meta">
+                Coming Soon...
+            </div>
+            <div class="arrow-icon"></div>
+        </article>
+        {% endif %}
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+    <h2 class="section-title">About White</h2>
+    <div class="about-content">
+        <p>"What I cannot create I do not understand" - Feynman Richard</p>
+
+        <p>{{ site.author_bio }}</p>
+
+        <p>我很喜欢费曼，并且我也坚信最好的学习方式是通过实践和分享。在博客中我将分享我当前所感兴趣专注的任何内容，无论是技术也好，亦或是一些书籍或感想，内容不局限，形式不拘泥。</p>
+        
+        <p>希望通过输出倒逼输入的形式，让我可以更专注我所感兴趣的任何东西，而不只是一知半解。</p>
+
+        <p>- White, 2025.7.21</p>
+
+    </div>
+</section>

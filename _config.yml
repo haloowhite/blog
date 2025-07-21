@@ -1,0 +1,39 @@
+# Site settings
+title: White's Blog
+description: Web Scraping Specialist & Creative Builder
+author: White
+email: white@haloowhite.com
+baseurl: ""
+url: "https://www.haloowhite.com"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:day/:title/
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:title/
+
+# Custom variables
+author_bio: "White is absolutely obsessed with Feynman—so much so that he chose Feynman as his avatar. He strives to present every complex concept in a straightforward, simple way. As a committed minimalist, he brings a passionate and curious spirit to life, immersing himself in reading and pursuing new experiences. Above all, White firmly believes no one has real limitations—time is the greatest lever of all. Don’t waste yours!"
+
+# Social links
+social:
+  github: Upsetin
+  telegram: XWhite
+  twitter: _kuicy
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor/
