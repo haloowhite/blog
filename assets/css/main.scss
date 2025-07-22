@@ -173,6 +173,16 @@ body {
   }
 
   .article-list {
+    .article-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      
+      &:hover {
+        color: inherit;
+      }
+    }
+
     .article-item {
       padding: 25px 0;
       border-bottom: 1px solid $border-color;
@@ -181,27 +191,25 @@ body {
       &:last-child {
         border-bottom: none;
       }
+    }
 
-      &:hover {
-        .article-title a {
-          color: $text-dark;
-        }
-
-        .arrow-icon {
-          opacity: 1;
-          right: -5px;
-        }
+    .article-link:hover .article-item {
+      .article-title {
+        color: $text-dark;
       }
 
+      .arrow-icon {
+        opacity: 1;
+        right: -5px;
+      }
+    }
+
+    .article-item {
       .article-title {
         font-size: 18px;
         font-weight: 400;
         margin-bottom: 8px;
-
-        a {
-          color: rgba(44, 44, 44, 0.75);
-          text-decoration: none;
-        }
+        color: rgba(44, 44, 44, 0.75);
       }
 
       .article-meta {
@@ -209,7 +217,6 @@ body {
         color: $text-light;
         font-style: italic;
       }
-
 
       .arrow-icon {
         position: absolute;
