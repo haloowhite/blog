@@ -10,6 +10,7 @@ url: "https://haloowhite.com"
 markdown: kramdown
 highlighter: rouge
 permalink: /:year/:month/:day/:title/
+theme: null
 
 # Markdown processing
 kramdown:

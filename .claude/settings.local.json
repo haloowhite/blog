@@ -3,7 +3,8 @@
     "allow": [
       "Bash(bundle exec:*)",
       "Bash(bundle install:*)",
-      "Bash(timeout 10 bundle exec jekyll serve)"
+      "Bash(timeout 10 bundle exec jekyll serve)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }
