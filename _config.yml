@@ -11,6 +11,17 @@ markdown: kramdown
 highlighter: rouge
 permalink: /:year/:month/:day/:title/
 
+# Markdown processing
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    wrap: true
+    line_numbers: false
+    block:
+      line_numbers: false
+      wrap: true
+
 # Plugins
 plugins:
   - jekyll-feed
