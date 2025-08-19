@@ -11,9 +11,9 @@ excerpt: "本文将简单直接地带你一起通过补环境的方式，实现�
 
 本文将简单直接地带你一起通过补环境的方式，实现某音最新的a_bogus参数构造，并实现验证请求返回对应数据。
 
-目标参数使用JSVMP 技术来实现关键的加密逻辑混淆。关于JSVMP，简单来说，就是用js在前端实现了一个栈式虚拟机，通过js实现相关的原子操作（类似汇编里的汇编机器语句）。相关的更详细的资料可参考这篇论文 [《基于 WebAssembly 的 JavaScript 代码虚拟化保护方法研究与实现》](https://haloowhite.com/Research%20and%20Implementation%20of%20JavaScript%20Code%20Virtualization%20Protection%20Method%20Based%20on%20WebAssembly.pdf) 。
+目标参数使用JSVMP 技术来实现关键的加密逻辑混淆。关于JSVMP，简单来说，就是用js在前端实现了一个栈式虚拟机，通过js实现相关的原子操作（类似汇编里的汇编机器语句）。相关的更详细的资料可参考这篇论文 [《基于 WebAssembly 的 JavaScript 代码虚拟化保护方法研究与实现》](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/Research%20and%20Implementation%20of%20JavaScript%20Code%20Virtualization%20Protection%20Method%20Based%20on%20WebAssembly.pdf) 。
 
-![《基于 WebAssembly 的 JavaScript 代码虚拟化保护方法研究与实现》论文封面](https://haloowhite.com/Research%20and%20Implementation%20of%20JavaScript%20Code%20Virtualization%20Protection%20Method%20Based%20on%20WebAssembly%20.png)
+![《基于 WebAssembly 的 JavaScript 代码虚拟化保护方法研究与实现》论文封面](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/Research%20and%20Implementation%20of%20JavaScript%20Code%20Virtualization%20Protection%20Method%20Based%20on%20WebAssembly%20.png)
 
 这类JSVMP的特征为，在源码中会有一个又臭又长的字符串和一个又臭又长的函数，里面是又臭又长的循环switch结构，其本质是环境初始化的字节码和对应的解释器。
 
@@ -158,7 +158,7 @@ v[++p] = m; // 原始代码
 
 有了上述完整的参数生成逻辑，就能够通过根据相关的请求信息生成目标加密参数了。我这里拿热搜接口作为测试，当然你也可以使用其他的接口进行测试。
 
-![验证成功照片](https://haloowhite.com/blog-dy-%20verify.png)
+![验证成功照片](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/blog-dy-%20verify.png)
 
 如图所示，不仅生成参数成功，还返回了相关的数据，说明我们构造的参数是合理可用的。有了参数后，可能后续需要注意的就是相关的风控，比如设备、环境信息、还有IP、msToken等。不过只要有足够耐心，并细心，总能初探成果，祝你顺利！
 
