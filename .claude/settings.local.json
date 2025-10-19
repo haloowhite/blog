@@ -4,7 +4,8 @@
       "Bash(bundle exec:*)",
       "Bash(bundle install:*)",
       "Bash(timeout 10 bundle exec jekyll serve)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(git remote set-url:*)"
     ],
     "deny": []
   }
