@@ -4,16 +4,23 @@ title: Archive
 permalink: /archive/
 ---
 
-<div class="featured-articles">
+<div class="featured-articles archive-page">
   <div class="article-list">
     {% for post in site.posts %}
-      <div class="article-item archive">
+    <a href="{{ post.url | relative_url }}" class="article-link">
+      <article class="article-item archive">
         <h3 class="article-title">
-          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-          <span class="arrow-icon"></span>
+          {{ post.title }}
         </h3>
-        <p class="article-meta">{{ post.date | date: "%Y-%m-%d" }}</p>
-      </div>
+        <div class="article-meta">
+          {{ post.date | date: "%Y年%m月%d日" }}
+          {% if post.categories %}
+          - {{ post.categories | join: ", " }}
+          {% endif %}
+        </div>
+        <div class="arrow-icon"></div>
+      </article>
+    </a>
     {% endfor %}
   </div>
 </div>
