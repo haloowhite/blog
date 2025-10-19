@@ -5,7 +5,10 @@
       "Bash(bundle install:*)",
       "Bash(timeout 10 bundle exec jekyll serve)",
       "Bash(rm:*)",
-      "Bash(git remote set-url:*)"
+      "Bash(git remote set-url:*)",
+      "Bash(FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --env-filter '\nCORRECT_NAME=\"\"White\"\"\nCORRECT_EMAIL=\"\"50665204+haloowhite@users.noreply.github.com\"\"\n\nexport GIT_COMMITTER_NAME=\"\"$CORRECT_NAME\"\"\nexport GIT_COMMITTER_EMAIL=\"\"$CORRECT_EMAIL\"\"\nexport GIT_AUTHOR_NAME=\"\"$CORRECT_NAME\"\"\nexport GIT_AUTHOR_EMAIL=\"\"$CORRECT_EMAIL\"\"\n' --tag-name-filter cat -- --branches --tags)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ],
     "deny": []
   }
