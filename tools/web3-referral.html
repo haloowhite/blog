@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web3反女巫邀请构造器（撸毛必备）- 智能邀请结构生成工具</title>
+    <meta name="description" content="基于真实社交网络特征的Web3反女巫邀请构造器，通过幂律分布、随机深度优先等智能算法生成最优邀请结构，最大化收益同时规避女巫检测。免费在线工具，支持数据导出。">
+    <meta name="keywords" content="Web3,反女巫,邀请构造器,撸毛工具,区块链,邀请链,社交网络,算法,在线工具">
+    <meta name="author" content="White">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph tags -->
+    <meta property="og:title" content="Web3反女巫邀请构造器 - 智能邀请结构生成工具">
+    <meta property="og:description" content="基于真实社交网络特征的智能算法，通过幂律分布、随机深度优先、全层级流失模拟和时间维度建模，最大化收益同时规避女巫检测">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://haloowhite.com/tools/web3-referral.html">
+    <meta property="og:image" content="https://haloowhite.com/android-chrome-512x512.png">
+    <meta property="og:site_name" content="White's Blog">
+
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Web3反女巫邀请构造器 - 智能邀请结构生成工具">
+    <meta name="twitter:description" content="基于真实社交网络特征的智能算法，最大化收益同时规避女巫检测">
+    <meta name="twitter:image" content="https://haloowhite.com/android-chrome-512x512.png">
+    <meta name="twitter:creator" content="@HalooWhite">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://haloowhite.com/tools/web3-referral.html">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Web3反女巫邀请构造器",
+      "description": "基于真实社交网络特征的Web3反女巫邀请构造器，通过幂律分布、随机深度优先等智能算法生成最优邀请结构",
+      "url": "https://haloowhite.com/tools/web3-referral.html",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Any",
+      "author": {
+        "@type": "Person",
+        "name": "White",
+        "url": "https://haloowhite.com"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f7;
+            padding: 40px 20px;
+            min-height: 100vh;
+            color: #1d1d1f;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 48px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            color: #1d1d1f;
+        }
+
+        .subtitle {
+            font-size: 17px;
+            color: #6e6e73;
+            line-height: 1.6;
+            margin-bottom: 48px;
+            font-weight: 400;
+        }
+
+        .algorithm-box {
+            background: #f5f5f7;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 1px solid #e5e5e7;
+        }
+
+        .algorithm-box h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1d1d1f;
+        }
+
+        .algorithm-box ul {
+            margin-left: 24px;
+            color: #1d1d1f;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .algorithm-box li {
+            margin-bottom: 12px;
+        }
+
+        .algorithm-box strong {
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+            background: #fbfbfd;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #e5e5e7;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1d1d1f;
+            font-size: 15px;
+        }
+
+        label .hint {
+            font-weight: 400;
+            color: #86868b;
+            font-size: 13px;
+            display: block;
+            margin-top: 4px;
+        }
+
+        input {
+            padding: 14px 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 10px;
+            font-size: 17px;
+            background: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        .btn-generate {
+            grid-column: 1 / -1;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            background: #007AFF;
+            color: #ffffff;
+            transition: all 0.2s ease;
+            margin-top: 16px;
+        }
+
+        .btn-generate:hover {
+            background: #0051D5;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(0, 122, 255, 0.3);
+        }
+
+        .btn-generate:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: #fbfbfd;
+            padding: 24px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e5e5e7;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            border-color: #d2d2d7;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #007AFF;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #6e6e73;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metrics {
+            background: #fbfbfd;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            border: 1px solid #e5e5e7;
+        }
+
+        .metrics h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1d1d1f;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .metric-item {
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e5e7;
+            font-size: 14px;
+            color: #1d1d1f;
+        }
+
+        .metric-item strong {
+            font-weight: 600;
+            color: #000000;
+        }
+
+        .visualization-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .layout-switch {
+            display: flex;
+            gap: 8px;
+            background: #f5f5f7;
+            padding: 4px;
+            border-radius: 10px;
+        }
+
+        .layout-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: transparent;
+            color: #6e6e73;
+            transition: all 0.2s ease;
+        }
+
+        .layout-btn.active {
+            background: #007AFF;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e5e5e7;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1d1d1f;
+        }
+
+        #network {
+            width: 100%;
+            height: 700px;
+            border: 1px solid #e5e5e7;
+            border-radius: 12px;
+            margin-bottom: 32px;
+            background: #ffffff;
+        }
+
+        .account-table {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e5e5e7;
+            margin-bottom: 32px;
+        }
+
+        .account-table h3 {
+            background: #1d1d1f;
+            color: #ffffff;
+            padding: 20px 28px;
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f5f5f7;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th {
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            color: #1d1d1f;
+            border-bottom: 1px solid #e5e5e7;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f5f5f7;
+            font-size: 15px;
+            color: #1d1d1f;
+        }
+
+        tr:hover {
+            background: #fbfbfd;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-normal {
+            background: #34C759;
+            color: #ffffff;
+        }
+
+        .status-half {
+            background: #FF9500;
+            color: #ffffff;
+        }
+
+        .status-dead {
+            background: #FF3B30;
+            color: #ffffff;
+        }
+
+        .export-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .export-card {
+            background: #fbfbfd;
+            padding: 28px;
+            border-radius: 12px;
+            border: 1px solid #e5e5e7;
+        }
+
+        .export-card h4 {
+            margin-bottom: 16px;
+            color: #1d1d1f;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #d2d2d7;
+            border-radius: 10px;
+            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            resize: vertical;
+            min-height: 200px;
+            background: #ffffff;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #007AFF;
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+
+        .btn-copy {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #007AFF;
+            color: #ffffff;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.2s ease;
+            font-size: 15px;
+        }
+
+        .btn-copy:hover {
+            background: #0051D5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+        }
+
+        .btn-copy:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Web3反女巫邀请构造器（撸毛必备）</h1>
+        <p class="subtitle">
+            基于真实社交网络特征的智能算法，通过幂律分布、随机深度优先、全层级流失模拟和时间维度建模，最大化收益同时规避女巫检测
+        </p>
+
+        <div class="algorithm-box">
+            <h3>算法原理</h3>
+            <ul>
+                <li><strong>幂律分布：</strong>20%账号贡献80%邀请（符合KOL现象），多数账号邀请0-2人</li>
+                <li><strong>随机森林：</strong>森林数量动态调整（总数^0.4），每个森林独立参数</li>
+                <li><strong>不规则树结构：</strong>使用随机DFS替代BFS，树形状完全不规则，深度不一</li>
+                <li><strong>全层级流失：</strong>任何层级都可能坏死，基于真实用户流失曲线</li>
+                <li><strong>时间维度：</strong>注册时间间隔符合泊松分布（1-72小时），邀请延迟随机化</li>
+                <li><strong>结构熵最大化：</strong>最大化随机性，无规律可循</li>
+            </ul>
+        </div>
+
+        <div class="controls">
+            <div class="input-group">
+                <label>
+                    账号总数
+                    <span class="hint">你拥有的账号数量</span>
+                </label>
+                <input type="number" id="totalAccounts" value="50" min="2" max="10000">
+            </div>
+            <div class="input-group">
+                <label>
+                    平台邀请上限
+                    <span class="hint">平台硬性限制，严格遵守</span>
+                </label>
+                <input type="number" id="maxInvites" value="5" min="1" max="50">
+            </div>
+            <button class="btn-generate" onclick="generateStructure()">
+                生成最优结构
+            </button>
+        </div>
+
+        <div class="results" id="stats"></div>
+
+        <div class="metrics">
+            <h3>反女巫检测指标</h3>
+            <div class="metrics-grid" id="metricsGrid"></div>
+        </div>
+
+        <div class="visualization-controls">
+            <div class="layout-switch">
+                <button class="layout-btn active" onclick="switchLayout('hierarchical')">树状布局</button>
+                <button class="layout-btn" onclick="switchLayout('force')">力导向布局</button>
+            </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #34C759;"></div>
+                    <div class="legend-label">正常账号</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FF9500;"></div>
+                    <div class="legend-label">半坏死</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FF3B30;"></div>
+                    <div class="legend-label">全坏死</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="network"></div>
+
+        <div class="account-table">
+            <h3>账号操作手册</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>账号ID</th>
+                            <th>邀请人</th>
+                            <th>层级</th>
+                            <th>森林</th>
+                            <th>状态</th>
+                            <th>任务完成度</th>
+                            <th>预估收益</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="export-section">
+            <div class="export-card">
+                <h4>导出JSON数据</h4>
+                <textarea id="exportJSON" readonly></textarea>
+                <button class="btn-copy" onclick="copyJSON()">复制JSON</button>
+            </div>
+            <div class="export-card">
+                <h4>导出CSV表格</h4>
+                <textarea id="exportCSV" readonly></textarea>
+                <button class="btn-copy" onclick="copyCSV()">复制CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let network;
+        let accountData = [];
+        let currentLayout = 'hierarchical';
+
+        function zipfRandom(n, alpha = 1.5) {
+            const weights = Array.from({length: n}, (_, i) => 1 / Math.pow(i + 1, alpha));
+            const total = weights.reduce((a, b) => a + b, 0);
+            const rand = Math.random() * total;
+            let sum = 0;
+            for (let i = 0; i < n; i++) {
+                sum += weights[i];
+                if (rand <= sum) return i;
+            }
+            return n - 1;
+        }
+
+        function poissonRandom(lambda) {
+            let L = Math.exp(-lambda);
+            let k = 0;
+            let p = 1;
+            do {
+                k++;
+                p *= Math.random();
+            } while (p > L);
+            return k - 1;
+        }
+
+        function generateStructure() {
+            const totalAccounts = parseInt(document.getElementById('totalAccounts').value);
+            const maxInvites = parseInt(document.getElementById('maxInvites').value);
+
+            const forestCount = Math.max(2, Math.min(8, Math.ceil(Math.pow(totalAccounts, 0.4))));
+
+            const structure = buildRealisticStructure(totalAccounts, maxInvites, forestCount);
+
+            if (structure.length !== totalAccounts) {
+                console.error(`账号数不匹配！期望: ${totalAccounts}, 实际: ${structure.length}`);
+                alert(`⚠️ 生成失败：账号数不匹配（期望${totalAccounts}个，实际${structure.length}个），请刷新页面重试`);
+                return;
+            }
+
+            const accountIds = structure.map(s => s.account).sort((a, b) => a - b);
+            for (let i = 0; i < totalAccounts; i++) {
+                if (accountIds[i] !== i) {
+                    console.error(`账号ID不连续！缺失账号${i}`);
+                    alert(`⚠️ 生成失败：账号ID不连续，请刷新页面重试`);
+                    return;
+                }
+            }
+
+            const withStatus = assignRealisticDeadStatus(structure);
+            const withTime = assignRegistrationTime(withStatus);
+            const withRewards = calculateRewards(withTime);
+
+            accountData = withRewards;
+
+            const metrics = calculateAntiSybilMetrics(accountData, maxInvites);
+
+            displayStats(accountData, forestCount);
+            displayMetrics(metrics);
+            visualizeNetwork(accountData);
+            displayTable(accountData);
+            exportData(accountData);
+        }
+
+        function buildRealisticStructure(total, maxInvites, forestCount) {
+            const accounts = Array.from({length: total}, (_, i) => i);
+            const structure = [];
+            const accountsPerForest = Math.floor(total / forestCount);
+
+            let accountIndex = 0;
+
+            for (let f = 0; f < forestCount; f++) {
+                let forestSize;
+                if (f === forestCount - 1) {
+                    forestSize = total - accountIndex;
+                } else {
+                    const randomAdjust = Math.floor(Math.random() * 5) - 2;
+                    forestSize = Math.max(1, Math.min(accountsPerForest + randomAdjust, total - accountIndex - (forestCount - f - 1)));
+                }
+
+                const forestAccounts = accounts.slice(accountIndex, accountIndex + forestSize);
+                accountIndex += forestSize;
+
+                const forestMaxInvites = Math.max(1, Math.min(maxInvites, maxInvites + Math.floor(Math.random() * 3) - 1));
+                const alpha = 1.3 + Math.random() * 0.6;
+
+                const tree = buildIrregularTree(forestAccounts, forestMaxInvites, f, alpha);
+                structure.push(...tree);
+            }
+
+            return structure;
+        }
+
+        function buildIrregularTree(accounts, maxInvites, forestId, alpha) {
+            if (accounts.length === 0) return [];
+
+            const tree = [];
+            const root = accounts[0];
+
+            tree.push({
+                account: root,
+                inviter: null,
+                level: 0,
+                forest: forestId
+            });
+
+            const inviteQuotas = {};
+            accounts.forEach(acc => {
+                const quota = Math.min(maxInvites, zipfRandom(maxInvites + 1, alpha));
+                inviteQuotas[acc] = quota;
+            });
+
+            const stack = [{account: root, level: 0}];
+            let index = 1;
+
+            while (index < accounts.length) {
+                if (stack.length === 0) {
+                    const invitee = accounts[index++];
+                    tree.push({
+                        account: invitee,
+                        inviter: root,
+                        level: 1,
+                        forest: forestId
+                    });
+                    if (Math.random() < 0.5) {
+                        stack.push({account: invitee, level: 1});
+                    }
+                    continue;
+                }
+
+                const stackIndex = Math.floor(Math.random() * Math.min(stack.length, 3));
+                const current = stack[stackIndex];
+
+                const quota = inviteQuotas[current.account];
+                const currentChildren = tree.filter(t => t.inviter === current.account).length;
+
+                if (currentChildren < quota) {
+                    const invitee = accounts[index++];
+                    tree.push({
+                        account: invitee,
+                        inviter: current.account,
+                        level: current.level + 1,
+                        forest: forestId
+                    });
+
+                    if (Math.random() < 0.7) {
+                        stack.push({account: invitee, level: current.level + 1});
+                    }
+                } else {
+                    stack.splice(stackIndex, 1);
+                }
+            }
+
+            return tree;
+        }
+
+        function assignRealisticDeadStatus(structure) {
+            const maxLevel = Math.max(...structure.map(s => s.level));
+
+            return structure.map(account => {
+                let status = 'normal';
+                const levelRatio = maxLevel > 0 ? account.level / maxLevel : 0;
+
+                let deadProb, halfProb;
+
+                if (account.inviter === null) {
+                    deadProb = 0;
+                    halfProb = 0.05 + Math.random() * 0.1;
+                } else if (levelRatio < 0.3) {
+                    deadProb = 0.05 + Math.random() * 0.1;
+                    halfProb = 0.1 + Math.random() * 0.1;
+                } else if (levelRatio < 0.6) {
+                    deadProb = 0.2 + Math.random() * 0.15;
+                    halfProb = 0.15 + Math.random() * 0.1;
+                } else {
+                    deadProb = 0.4 + Math.random() * 0.25;
+                    halfProb = 0.15 + Math.random() * 0.1;
+                }
+
+                const rand = Math.random();
+                if (rand < deadProb) {
+                    status = 'dead';
+                } else if (rand < deadProb + halfProb) {
+                    status = 'half';
+                }
+
+                return {...account, status};
+            });
+        }
+
+        function assignRegistrationTime(accounts) {
+            const startTime = new Date('2025-01-01T00:00:00');
+            let currentTime = startTime.getTime();
+
+            return accounts.map(acc => {
+                const hoursGap = 1 + poissonRandom(8) + Math.random() * 12;
+                currentTime += hoursGap * 3600 * 1000;
+
+                return {
+                    ...acc,
+                    registrationTime: new Date(currentTime)
+                };
+            }).sort((a, b) => a.registrationTime - b.registrationTime);
+        }
+
+        function calculateRewards(accounts) {
+            const rewardMap = {};
+
+            accounts.forEach(acc => {
+                rewardMap[acc.account] = {direct: 0, indirect: 0};
+            });
+
+            accounts.forEach(acc => {
+                if (acc.inviter !== null) {
+                    const inviterData = accounts.find(a => a.account === acc.inviter);
+                    const inviterMult = inviterData.status === 'normal' ? 1 : (inviterData.status === 'half' ? 0.7 : 0.5);
+                    const inviteeMult = acc.status === 'normal' ? 1 : (acc.status === 'half' ? 0.5 : 0.3);
+
+                    rewardMap[acc.inviter].direct += 100 * inviterMult * inviteeMult;
+
+                    let current = acc.inviter;
+                    let mult = 0.5;
+                    for (let i = 0; i < 2; i++) {
+                        const parent = accounts.find(a => a.account === current);
+                        if (parent && parent.inviter !== null) {
+                            const parentData = accounts.find(a => a.account === parent.inviter);
+                            const parentMult = parentData.status === 'normal' ? 1 : (parentData.status === 'half' ? 0.7 : 0.5);
+                            rewardMap[parent.inviter].indirect += 100 * mult * parentMult * inviteeMult;
+                            current = parent.inviter;
+                            mult *= 0.5;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            });
+
+            return accounts.map(acc => ({
+                ...acc,
+                reward: Math.round(rewardMap[acc.account].direct + rewardMap[acc.account].indirect),
+                directReward: Math.round(rewardMap[acc.account].direct),
+                indirectReward: Math.round(rewardMap[acc.account].indirect)
+            }));
+        }
+
+        function calculateAntiSybilMetrics(accounts, maxInvites) {
+            const inviteCounts = {};
+            accounts.forEach(acc => inviteCounts[acc.account] = 0);
+            accounts.forEach(acc => {
+                if (acc.inviter !== null) inviteCounts[acc.inviter]++;
+            });
+
+            const inviteValues = Object.values(inviteCounts);
+            const avgInvites = inviteValues.reduce((a, b) => a + b, 0) / inviteValues.length;
+            const stdInvites = Math.sqrt(inviteValues.reduce((a, b) => a + Math.pow(b - avgInvites, 2), 0) / inviteValues.length);
+
+            const violations = inviteValues.filter(v => v > maxInvites).length;
+
+            const levels = accounts.map(a => a.level);
+            const maxLevel = Math.max(...levels);
+            const avgLevel = levels.reduce((a, b) => a + b, 0) / levels.length;
+
+            const sortedInvites = inviteValues.sort((a, b) => a - b);
+            const n = sortedInvites.length;
+            let gini = 0;
+            sortedInvites.forEach((val, i) => {
+                gini += (2 * (i + 1) - n - 1) * val;
+            });
+            gini = gini / (n * sortedInvites.reduce((a, b) => a + b, 0));
+
+            return {
+                avgInvites: avgInvites.toFixed(2),
+                stdInvites: stdInvites.toFixed(2),
+                violations,
+                maxLevel,
+                avgLevel: avgLevel.toFixed(2),
+                giniCoef: gini.toFixed(3),
+                zeroInviters: inviteValues.filter(v => v === 0).length,
+                maxInviters: inviteValues.filter(v => v === maxInvites).length
+            };
+        }
+
+        function displayStats(accounts, forestCount) {
+            const total = accounts.reduce((sum, acc) => sum + acc.reward, 0);
+            const normal = accounts.filter(a => a.status === 'normal').length;
+            const half = accounts.filter(a => a.status === 'half').length;
+            const dead = accounts.filter(a => a.status === 'dead').length;
+
+            document.getElementById('stats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${accounts.length}</div>
+                    <div class="stat-label">总账号</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${forestCount}</div>
+                    <div class="stat-label">森林数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${normal}</div>
+                    <div class="stat-label">正常</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${half}</div>
+                    <div class="stat-label">半坏死</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${dead}</div>
+                    <div class="stat-label">全坏死</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${total.toLocaleString()}</div>
+                    <div class="stat-label">总收益</div>
+                </div>
+            `;
+        }
+
+        function displayMetrics(metrics) {
+            document.getElementById('metricsGrid').innerHTML = `
+                <div class="metric-item">
+                    <strong>平均邀请数</strong> ${metrics.avgInvites} <small style="color: #86868b;">(真实≈1-2)</small>
+                </div>
+                <div class="metric-item">
+                    <strong>邀请数标准差</strong> ${metrics.stdInvites} <small style="color: #86868b;">(越大越真实)</small>
+                </div>
+                <div class="metric-item">
+                    <strong>超限账号</strong> ${metrics.violations} <small style="color: #86868b;">(必须=0)</small>
+                </div>
+                <div class="metric-item">
+                    <strong>Gini系数</strong> ${metrics.giniCoef} <small style="color: #86868b;">(0.5-0.7最佳)</small>
+                </div>
+                <div class="metric-item">
+                    <strong>零邀请账号</strong> ${metrics.zeroInviters} <small style="color: #86868b;">(越多越真实)</small>
+                </div>
+                <div class="metric-item">
+                    <strong>最大深度</strong> ${metrics.maxLevel} <small style="color: #86868b;">(不规则最好)</small>
+                </div>
+            `;
+        }
+
+        function switchLayout(layout) {
+            currentLayout = layout;
+            document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            visualizeNetwork(accountData);
+        }
+
+        function visualizeNetwork(accounts) {
+            const colors = {
+                normal: '#34C759',
+                half: '#FF9500',
+                dead: '#FF3B30'
+            };
+
+            const nodes = accounts.map(acc => ({
+                id: acc.account,
+                label: `${acc.account}`,
+                color: colors[acc.status],
+                size: 15 + acc.reward / 50,
+                font: {color: '#ffffff', size: 11, bold: true},
+                title: `账号${acc.account}<br>状态: ${acc.status}<br>层级: ${acc.level}<br>收益: ${acc.reward}`,
+                borderWidth: 2,
+                borderWidthSelected: 3
+            }));
+
+            const edges = accounts.filter(a => a.inviter !== null).map(acc => ({
+                from: acc.inviter,
+                to: acc.account,
+                arrows: 'to',
+                color: {color: '#d2d2d7', opacity: 0.6},
+                width: 1.5,
+                smooth: {type: 'cubicBezier'}
+            }));
+
+            const container = document.getElementById('network');
+            const data = {nodes, edges};
+
+            const options = currentLayout === 'hierarchical' ? {
+                layout: {
+                    hierarchical: {
+                        direction: 'UD',
+                        sortMethod: 'directed',
+                        nodeSpacing: 100,
+                        levelSeparation: 120
+                    }
+                },
+                physics: false,
+                interaction: {hover: true}
+            } : {
+                layout: {
+                    improvedLayout: true
+                },
+                physics: {
+                    enabled: true,
+                    barnesHut: {
+                        gravitationalConstant: -8000,
+                        springConstant: 0.04,
+                        springLength: 100
+                    },
+                    stabilization: {
+                        iterations: 200
+                    }
+                },
+                interaction: {hover: true}
+            };
+
+            if (network) network.destroy();
+            network = new vis.Network(container, data, options);
+        }
+
+        function displayTable(accounts) {
+            const statusText = {normal: '正常', half: '半坏死', dead: '全坏死'};
+            const taskText = {normal: '100%', half: '50%', dead: '0%'};
+
+            const sorted = [...accounts].sort((a, b) => a.account - b.account);
+
+            document.getElementById('accountTableBody').innerHTML = sorted.map(acc => `
+                <tr>
+                    <td><strong>账号${acc.account}</strong></td>
+                    <td>${acc.inviter === null ? '—' : `账号${acc.inviter}`}</td>
+                    <td>L${acc.level}</td>
+                    <td>F${acc.forest + 1}</td>
+                    <td><span class="status-badge status-${acc.status}">${statusText[acc.status]}</span></td>
+                    <td>${taskText[acc.status]}</td>
+                    <td><strong>${acc.reward}</strong></td>
+                </tr>
+            `).join('');
+        }
+
+        function exportData(accounts) {
+            document.getElementById('exportJSON').value = JSON.stringify({
+                metadata: {total: accounts.length, generated: new Date().toISOString()},
+                accounts: accounts.map(a => ({
+                    id: a.account,
+                    inviter: a.inviter,
+                    level: a.level,
+                    forest: a.forest,
+                    status: a.status,
+                    reward: a.reward
+                }))
+            }, null, 2);
+
+            document.getElementById('exportCSV').value = [
+                '账号ID,邀请人,层级,森林,状态,任务完成度,预估收益',
+                ...accounts.map(a =>
+                    `${a.account},${a.inviter || ''},${a.level},${a.forest},${a.status},${a.status === 'normal' ? '100%' : a.status === 'half' ? '50%' : '0%'},${a.reward}`
+                )
+            ].join('\n');
+        }
+
+        function copyJSON() {
+            document.getElementById('exportJSON').select();
+            document.execCommand('copy');
+            alert('✅ JSON已复制');
+        }
+
+        function copyCSV() {
+            document.getElementById('exportCSV').select();
+            document.execCommand('copy');
+            alert('✅ CSV已复制');
+        }
+
+        window.onload = () => generateStructure();
+    </script>
+</body>
+</html>
