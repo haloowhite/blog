@@ -293,7 +293,7 @@ body {
     }
 
     .article-item {
-      padding: 25px 0;
+      padding: 15px 0;
       border-bottom: 1px solid $border-color;
       position: relative;
 
@@ -342,7 +342,7 @@ body {
       }
 
       &.archive {
-        padding: 10px 0;
+        padding: 8px 0;
       }
     }
   }
@@ -603,7 +603,7 @@ body {
 
   h1, h2, h3, h4, h5, h6 {
     color: $text-dark;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 20px;
     font-weight: 600;
     line-height: 1.3;
@@ -935,14 +935,16 @@ body {
 
 
 .page-header {
-  margin-bottom: 40px;
+  //margin-bottom: 40px;
 
   .page-title {
     font-size: 32px;
     font-weight: 700;
     color: $text-dark;
-    margin-bottom: 15px;
+    //margin-bottom: 15px;
     line-height: 1.3;
+    padding-bottom: 10px;
+    border-bottom: 2px solid $secondary-gray;
   }
 }
 
@@ -957,7 +959,7 @@ body {
 
   h1, h2, h3, h4, h5, h6 {
     color: $text-dark;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 20px;
     font-weight: 600;
     line-height: 1.3;
@@ -1282,6 +1284,15 @@ body {
   font-size: 14px;
   line-height: 1.6;
   margin-top: 8px;
+}
+
+// Tools page specific styling
+.tools-page .featured-articles {
+  margin-bottom: 80px;
+
+  .article-item {
+    padding: 12px 0;
+  }
 }
 
 // Enhanced code block styles - only for .highlighter-rouge DIV containers (multi-line code blocks)
