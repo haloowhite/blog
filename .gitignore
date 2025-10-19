@@ -2693,3 +2693,4 @@ vendor/
 .DS_Store
 *.log
 jekyll.log
+.claude/
