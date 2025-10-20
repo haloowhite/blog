@@ -17,5 +17,16 @@ permalink: /tools/
         <div class="arrow-icon"></div>
       </article>
     </a>
+    <a href="/tools/web3-referral.html" class="article-link">
+      <article class="article-item">
+        <h3 class="article-title">
+          Web3反女巫邀请构造器
+        </h3>
+        <div class="article-meta">
+          Web3工具 - 智能邀请结构生成与反女巫检测
+        </div>
+        <div class="arrow-icon"></div>
+      </article>
+    </a>
   </div>
 </div>
