@@ -480,7 +480,7 @@ body {
   color: inherit;
 }
 .featured-articles .article-list .article-item {
-  padding: 25px 0;
+  padding: 15px 0;
   border-bottom: 1px solid #ddd;
   position: relative;
 }
@@ -518,7 +518,7 @@ body {
   content: "↗";
 }
 .featured-articles .article-list .article-item.archive {
-  padding: 10px 0;
+  padding: 8px 0;
 }
 
 .about-section .section-title {
@@ -740,7 +740,7 @@ body {
 }
 .post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5, .post-content h6 {
   color: rgba(44, 44, 44, 0.85);
-  margin-top: 40px;
+  margin-top: 20px;
   margin-bottom: 20px;
   font-weight: 600;
   line-height: 1.3;
@@ -1011,15 +1011,13 @@ body {
   color: rgba(44, 44, 44, 0.85);
 }
 
-.page-header {
-  margin-bottom: 40px;
-}
 .page-header .page-title {
   font-size: 32px;
   font-weight: 700;
   color: rgba(44, 44, 44, 0.85);
-  margin-bottom: 15px;
   line-height: 1.3;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e8e8e8;
 }
 
 .page-content {
@@ -1033,7 +1031,7 @@ body {
 }
 .page-content h1, .page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6 {
   color: rgba(44, 44, 44, 0.85);
-  margin-top: 40px;
+  margin-top: 20px;
   margin-bottom: 20px;
   font-weight: 600;
   line-height: 1.3;
@@ -1296,6 +1294,13 @@ body {
   font-size: 14px;
   line-height: 1.6;
   margin-top: 8px;
+}
+
+.tools-page .featured-articles {
+  margin-bottom: 80px;
+}
+.tools-page .featured-articles .article-item {
+  padding: 12px 0;
 }
 
 .highlighter-rouge:not(code) {
