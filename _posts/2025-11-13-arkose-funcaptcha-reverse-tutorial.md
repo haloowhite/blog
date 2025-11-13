@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "ArkoseLabs FunCaptcha 协议逆向与风控要点"
-date: 2025-08-18
-categories: [JSVMP, 逆向]
-tags: [有手就行系列，逆向, JSVMP, 抖音]
+date: 2025-11-13
+categories: [验证码, 逆向]
+tags: [验证码，逆向, ArkoseLabs, FunCaptcha]
 excerpt: "这次不用带手，我们一起深入浅出关于FunCaptcha你所需要知道的一切..."
 ---
 # **ArkoseLabs FunCaptcha 协议逆向与风控要点**
