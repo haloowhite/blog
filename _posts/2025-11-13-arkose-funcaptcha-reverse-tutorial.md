@@ -20,7 +20,7 @@ excerpt: "这次不用带手，我们一起深入浅出关于FunCaptcha你所需
 
 ### **1、获取session token**
 
-**POST  https://client-api.arkoselabs.com/fc/gt2/public_key/2F4F0B28-BC94-4271-8AD7-A51662E3C91C**  
+`POST  https://client-api.arkoselabs.com/fc/gt2/public_key/2F4F0B28-BC94-4271-8AD7-A51662E3C91C`  
 
 ![Session Token 接口返回结果](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/session-token.png)
 
@@ -30,7 +30,7 @@ excerpt: "这次不用带手，我们一起深入浅出关于FunCaptcha你所需
 
 ### **3、获取/刷新验证码详情**
 
-**POST https://client-api.arkoselabs.com/fc/gfct/**
+`POST https://client-api.arkoselabs.com/fc/gfct/`
 
 ![验证码详情 接口返回结果](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/captcha-detail.png)
 
@@ -38,7 +38,7 @@ excerpt: "这次不用带手，我们一起深入浅出关于FunCaptcha你所需
 
 ### 4、提交当前验证码结果
 
-POST https://client-api.arkoselabs.com/fc/ca/
+`POST https://client-api.arkoselabs.com/fc/ca/`
 
 ![提交验证码接口结果](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/submit-result.png)
 
@@ -50,7 +50,7 @@ OK，让我们潜入！这一趴才是真正的重点主题，我将详细的剖
 
 ### 1、获取Session Token
 
-**POST https://client-api.arkoselabs.com/fc/gt2/public_key/2F4F0B28-BC94-4271-8AD7-A51662E3C91C**
+`POST https://client-api.arkoselabs.com/fc/gt2/public_key/2F4F0B28-BC94-4271-8AD7-A51662E3C91C`
 
 需要关注的参数:
 
@@ -154,7 +154,7 @@ def rsa_encrypt_arkose(fp_data: dict):
 
 ### 2、 获取/刷新验证码详情
 
-**POST https://client-api.arkoselabs.com/fc/gfct/**
+`POST https://client-api.arkoselabs.com/fc/gfct/`
 
 这一步没有涉及任何复杂的加密，仅仅是一个时间戳需要简单构造一下，相关请求的参数如下：
 
@@ -180,7 +180,7 @@ def rsa_encrypt_arkose(fp_data: dict):
 
 ### 3、提交验证码详情
 
-**POST https://client-api.arkoselabs.com/fc/ca/**
+`POST https://client-api.arkoselabs.com/fc/ca/`
 
 又一个重头戏来咯！需要注意的请求参数：
 
@@ -297,7 +297,7 @@ def decrypt(encrypted_json: str, token: str):
     return plaintext[:-pad_len].decode()
 ```
 
-关于 `guess` 和 `tguess` ，逻辑都是一样的，`token` 参数都是对应的session token（请求1中获取的结果），就可以对请求参数进行解密了，guess对应的明文为 ` [{"index":0},{"index":2}]`  1和2为对应每轮验证码的图片答案下标。至于  `tguess` 结构和 `guess` 一致，但是里面的参数没有这么标准，每次验证请求的js文件不一样，导致 `tguess` 参数构造的明文也不一样，具体可以多解密几个请求中的 `tguess` 参数看看。
+关于 `guess` 和 `tguess` ，逻辑都是一样的，`token` 参数都是对应的session token（请求1中获取的结果），就可以对请求参数进行解密了，guess对应的明文为 ``` [{"index":0},{"index":2}]```  1和2为对应每轮验证码的图片答案下标。至于  `tguess` 结构和 `guess` 一致，但是里面的参数没有这么标准，每次验证请求的js文件不一样，导致 `tguess` 参数构造的明文也不一样，具体可以多解密几个请求中的 `tguess` 参数看看。
 
 至于请求头中的 `x-requested-id`  ，使用的加密手段和 `guess`、`tguess` 一致，只不过密钥（Python参考代码中 token 参数）不再是单纯的 session token，而是 `REQUESTED{token}ID` 这样的拼接结果，同样，和 `tguess` 一样，每次验证的时候明文都会不一样，类似 `{"sc":[376,345]}` 这样的明文。
 
@@ -321,7 +321,7 @@ def decrypt(encrypted_json: str, token: str):
 
 OK！让我们进入最令人血脉喷张的时刻！噼里啪啦说这么一堆，要是实际检验一下发现没用，那不纯纯浪费我们各自的时间，不仅是你的，还有我的，纯纯就是浪费！
 
-好了，不发表感言废话了，让我们直接连贯开始（我这里就直接手动打码，后续可以接一个自动化打码，这里推荐我自用的 https://yescaptcha.com/i/HL9j4r， 我发誓这不是广子，虽然我真的希望是，如果品牌方看到，希望你能懂这是个人情社会 bushi...对不起我又废话了）！开始潜入！看图即可
+好了，不发表感言废话了，让我们直接连贯开始（我这里就直接手动打码，后续可以接一个自动化打码，这里推荐我自用的 [YesCaptcha](https://yescaptcha.com/i/HL9j4r)， 我发誓这不是广子，虽然我真的希望是，如果品牌方看到，希望你能懂这是个人情社会 bushi...对不起我又废话了）！开始潜入！看图即可
 
 ![实战成果截图](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/verify.png)
 
