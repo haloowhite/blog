@@ -20,7 +20,7 @@ excerpt: "这次不用带手，我们一起深入浅出关于FunCaptcha你所需
 
 ### **1、获取session token**
 
-`POST  https://client-api.arkoselabs.com/fc/gt2/public_key/2F4F0B28-BC94-4271-8AD7-A51662E3C91C`  
+`POST https://client-api.arkoselabs.com/fc/gt2/public_key/{对应的public-key}`  
 
 ![Session Token 接口返回结果](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/session-token.png)
 
@@ -50,7 +50,7 @@ OK，让我们潜入！这一趴才是真正的重点主题，我将详细的剖
 
 ### 1、获取Session Token
 
-`POST https://client-api.arkoselabs.com/fc/gt2/public_key/2F4F0B28-BC94-4271-8AD7-A51662E3C91C`
+`POST https://client-api.arkoselabs.com/fc/gt2/public_key/{对应的public-key}`
 
 需要关注的参数:
 
