@@ -4,24 +4,33 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>
-        {% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}
+        {% if page.title and page.title != "Home" %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }} - Web Scraping & 逆向工程技术博客{% endif %}
     </title>
     <meta
             name="description"
-            content="White: {% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
+            content="{% if page.description %}{{ page.description }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
     />
+    <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ',' }}{% else %}Web Scraping,逆向工程,JSVMP,技术博客{% endif %}" />
+    <meta name="author" content="{{ site.author }}" />
+    <meta name="robots" content="index,follow" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ '/favicon-32x32.png' | relative_url }}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ '/favicon-16x16.png' | relative_url }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ '/apple-touch-icon.png' | relative_url }}" />
 
     <!-- Google Fonts -->
     <link
-            rel="preconnect" 
+            rel="preconnect"
             href="https://fonts.googleapis.com"
     />
-    <link 
-            rel="preconnect" 
-            href="https://fonts.gstatic.com" 
+    <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
             crossorigin
     />
-    
+
     <link
             rel="stylesheet"
             href="{{ '/assets/css/main.css' | relative_url }}"
@@ -32,37 +41,52 @@
     />
 
     <!-- Open Graph -->
+    <meta property="og:site_name" content="{{ site.title }}" />
     <meta
             property="og:title"
-            content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}"
+            content="{% if page.title and page.title != 'Home' %}{{ page.title }}{% else %}{{ site.title }}{% endif %}"
     />
     <meta
             property="og:description"
-            content="White: {% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
+            content="{% if page.description %}{{ page.description }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
     />
     <meta
             property="og:type"
             content="{% if page.date %}article{% else %}website{% endif %}"
     />
     <meta property="og:url" content="{{ page.url | absolute_url }}"/>
+    <meta property="og:locale" content="zh_CN" />
     <meta
             property="og:image"
-            content="{{ '/assets/images/feynman.jpg' | absolute_url }}"
+            content="{% if page.image %}{{ page.image | absolute_url }}{% else %}{{ '/assets/images/feynman.jpg' | absolute_url }}{% endif %}"
     />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="{% if page.title and page.title != 'Home' %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
+    {% if page.date %}
+    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}" />
+    <meta property="article:author" content="{{ site.author }}" />
+    {% if page.categories %}{% for cat in page.categories %}<meta property="article:section" content="{{ cat }}" />
+    {% endfor %}{% endif %}
+    {% if page.tags %}{% for tag in page.tags %}<meta property="article:tag" content="{{ tag }}" />
+    {% endfor %}{% endif %}
+    {% endif %}
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:site" content="@holaawhite" />
+    <meta name="twitter:creator" content="@holaawhite" />
     <meta
             name="twitter:title"
-            content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}"
+            content="{% if page.title and page.title != 'Home' %}{{ page.title }}{% else %}{{ site.title }}{% endif %}"
     />
     <meta
             name="twitter:description"
-            content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
+            content="{% if page.description %}{{ page.description }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}"
     />
     <meta
             name="twitter:image"
-            content="{{ '/assets/images/feynman.jpg' | absolute_url }}"
+            content="{% if page.image %}{{ page.image | absolute_url }}{% else %}{{ '/assets/images/feynman.jpg' | absolute_url }}{% endif %}"
     />
 
     <!-- Font Awesome Icons -->
@@ -78,12 +102,74 @@
             href="{{ '/feed.xml' | absolute_url }}"
             title="{{ site.title }}"
     />
+
+    <!-- JSON-LD Structured Data -->
+    {% if page.date %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Home", "item": "{{ site.url }}"},
+        {"@type": "ListItem", "position": 2, "name": "Archive", "item": "{{ site.url }}/archive/"},
+        {"@type": "ListItem", "position": 3, "name": {{ page.title | jsonify }}}
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": {{ page.title | jsonify }},
+      "description": {% if page.description %}{{ page.description | jsonify }}{% elsif page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 | jsonify }}{% else %}{{ site.description | jsonify }}{% endif %},
+      "url": "{{ page.url | absolute_url }}",
+      "datePublished": "{{ page.date | date_to_xmlschema }}",
+      "dateModified": "{% if page.last_modified_at %}{{ page.last_modified_at | date_to_xmlschema }}{% else %}{{ page.date | date_to_xmlschema }}{% endif %}",
+      "author": {
+        "@type": "Person",
+        "name": "{{ site.author }}",
+        "url": "{{ site.url }}"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "{{ site.author }}",
+        "url": "{{ site.url }}"
+      },
+      "image": "{% if page.image %}{{ page.image | absolute_url }}{% else %}{{ '/assets/images/feynman.jpg' | absolute_url }}{% endif %}",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ page.url | absolute_url }}"
+      }{% if page.tags %},
+      "keywords": {{ page.tags | jsonify }}{% endif %}
+    }
+    </script>
+    {% else %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": {{ site.title | jsonify }},
+      "description": {{ site.description | jsonify }},
+      "url": "{{ site.url }}",
+      "author": {
+        "@type": "Person",
+        "name": "{{ site.author }}",
+        "url": "{{ site.url }}",
+        "sameAs": [
+          "https://github.com/HalooWhite",
+          "https://x.com/holaawhite",
+          "https://t.me/haloowhite"
+        ]
+      }
+    }
+    </script>
+    {% endif %}
 </head>
 <body>
 <div class="site-container">
     <aside class="sidebar">
         <h1 class="author-name">{{ site.author }}</h1>
-        <p class="author-title">{{ site.description }}</p>
+        <p class="author-title">{{ site.tagline }}</p>
         <img
                 src="{{ '/assets/images/feynman.jpg' | relative_url }}"
                 alt="Richard Feynman"
@@ -93,16 +179,20 @@
             <a
                     href="https://github.com/HalooWhite"
                     target="_blank"
+                    rel="noopener noreferrer"
                     class="social-icon"
+                    aria-label="GitHub"
             ><i class="fa-brands fa-github"></i></a
             >
             <a
                     href="https://t.me/haloowhite"
                     target="_blank"
+                    rel="noopener noreferrer"
                     class="social-icon"
+                    aria-label="Telegram"
             ><i class="fa-brands fa-telegram"></i></a
             >
-            <a href="https://x.com/holaawhite" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://x.com/holaawhite" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
         </div>
     </aside>
 
@@ -129,7 +219,7 @@
                     >
                 </li>
                 <li>
-                    <a class="active" href="https://t.me/haloowhite">Contact</a>
+                    <a class="active" href="https://t.me/haloowhite" target="_blank" rel="noopener noreferrer">Contact</a>
                 </li>
             </ul>
         </nav>
@@ -139,5 +229,15 @@
 
 <!-- Code Copy Functionality -->
 <script src="{{ '/assets/js/code-copy.js' | relative_url }}"></script>
+
+<footer class="site-footer">
+    <div class="footer-content">
+        <p>&copy; {{ 'now' | date: "%Y" }} {{ site.author }}. All rights reserved.</p>
+        <nav class="footer-nav">
+            <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a>
+            <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+        </nav>
+    </div>
+</footer>
 </body>
 </html>

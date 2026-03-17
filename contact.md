@@ -2,6 +2,7 @@
 layout: page
 title: Contact
 permalink: /contact/
+description: "联系 White — 技术讨论、项目合作、经验分享，欢迎通过邮件或社交媒体与我交流。"
 ---
 
 <div class="contact-content">

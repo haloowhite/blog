@@ -3,8 +3,14 @@ layout: post
 title: "一个用于解决JSVMP海量日志导出技巧"
 date: 2025-08-05
 categories: [JSVMP, 逆向]
-tags: [逆向, JSVMP, 日志导出]
+tags: [逆向, JSVMP, 日志导出, JavaScript, 调试工具]
+description: "解决 JSVMP 逆向分析中海量日志导出难题：一段 JS 代码实现 console 日志自动收集、批量导出到本地文件，支持自动分批和定时导出。"
 excerpt: "在运行之前将以下这段代码贴进console中运行，然后执行需要的逻辑，待日志完全打印，手动在console执行 `console.save()`，即可立马将所有的日志导出为本地文件..."
+faq:
+  - q: "为什么需要导出 JSVMP 日志？"
+    a: "JSVMP 虚拟机执行时会产生海量日志（通常上万行），在浏览器 console 中直接分析非常困难。导出为本地文件后可以用文本编辑器搜索和分析，大幅提升逆向效率。"
+  - q: "如何使用这个日志导出工具？"
+    a: "在浏览器 console 中先粘贴运行导出代码，然后执行你需要分析的业务逻辑，等日志打印完毕后在 console 中执行 console.save() 即可将所有日志导出为本地文件。"
 ---
 
 在运行之前将以下这段代码贴进console中运行，然后执行需要的逻辑，待日志完全打印，手动在console执行 `console.save()`，即可立马将所有的日志导出为本地文件

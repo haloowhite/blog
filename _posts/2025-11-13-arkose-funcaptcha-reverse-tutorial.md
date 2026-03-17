@@ -3,8 +3,16 @@ layout: post
 title: "ArkoseLabs FunCaptcha 协议逆向与风控要点"
 date: 2025-11-13
 categories: [验证码, 逆向]
-tags: [验证码，逆向, ArkoseLabs, FunCaptcha]
+tags: [验证码, 逆向, ArkoseLabs, FunCaptcha, 协议分析]
+description: "深入解析 ArkoseLabs FunCaptcha 验证码的完整请求链路、AES/RSA 加密机制、设备指纹构造与风控策略，附完整协议逆向实战教程。"
 excerpt: "这次不用带手，我们一起深入浅出关于FunCaptcha你所需要知道的一切..."
+faq:
+  - q: "FunCaptcha 的完整请求链路包含哪些步骤？"
+    a: "包含4个核心步骤：1) 获取 session token；2) 可选的 PoW 挑战；3) 获取/刷新验证码详情；4) 提交验证码答案并获取结果。"
+  - q: "FunCaptcha 使用了哪些加密算法？"
+    a: "主要使用 AES-CBC 和 RSA-OAEP 加密。数据先用 AES-CBC 加密，AES 密钥再用 RSA 公钥加密后一起传输。解密响应时使用 token 作为 passphrase 通过 EVP_BytesToKey 派生 AES 密钥。"
+  - q: "什么因素会影响 FunCaptcha 的验证难度？"
+    a: "设备指纹质量、TLS 指纹（JA3）、请求头指纹、IP 风控等级。如果指纹太劣质会被直接拒绝（DENIED ACCESS），干净的环境则题目少、难度低。"
 ---
 
 虽然这一期还是有手就行，但考虑到有点费手，就没加入《有手系列》里，我知道很贴心，不用谢～ 让我们直接进入正题！  

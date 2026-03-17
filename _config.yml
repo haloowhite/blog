@@ -1,10 +1,14 @@
 # Site settings
 title: White's Blog
-description: Web Scraping Specialist & Creative Builder
+tagline: "Web Scraping Specialist & Creative Builder"
+description: "Web Scraping & Reverse Engineering 技术博客 — 专注逆向工程、JSVMP分析、验证码协议解析与自动化工具开发"
 author: White
 email: white@haloowhite.com
 baseurl: ""
 url: "https://haloowhite.com"
+lang: zh-CN
+twitter_username: holaawhite
+github_username: HalooWhite
 
 # Build settings
 markdown: kramdown

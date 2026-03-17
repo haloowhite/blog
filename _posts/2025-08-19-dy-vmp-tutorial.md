@@ -3,8 +3,16 @@ layout: post
 title: "有手就行系列——抖音最新bdms_1.0.1.19_fix参数构造a_bogus"
 date: 2025-08-18
 categories: [JSVMP, 逆向]
-tags: [有手就行系列，逆向, JSVMP, 抖音]
+tags: [有手就行系列, 逆向, JSVMP, 抖音, a_bogus, 补环境]
+description: "通过补环境方式实现抖音最新 bdms_1.0.1.19_fix 版本的 a_bogus 参数构造，详解 JSVMP 虚拟机原理与完整的逆向补环境实战流程。"
 excerpt: "本文将简单直接地带你一起通过补环境的方式，实现某音最新的a_bogus参数构造，并实现验证请求返回对应数据..."
+faq:
+  - q: "什么是 JSVMP？"
+    a: "JSVMP 是用 JavaScript 在前端实现的栈式虚拟机，通过 JS 实现原子操作（类似汇编指令），将关键加密逻辑混淆保护。特征是源码中有一个很长的字符串和一个包含循环 switch 结构的函数。"
+  - q: "抖音 a_bogus 参数是如何生成的？"
+    a: "a_bogus 通过 JSVMP 虚拟机执行字节码生成，依赖浏览器环境信息。可以通过补环境（模拟浏览器 API）的方式在 Node.js 中复现其生成逻辑。"
+  - q: "补环境的核心思路是什么？"
+    a: "通过 proxy 代理拦截 JSVMP 虚拟机对浏览器环境的访问，根据日志逐一补全 navigator、document、window 等对象的属性和方法，使虚拟机能在 Node.js 环境中正常执行。"
 ---
 
 ## 0、背景介绍

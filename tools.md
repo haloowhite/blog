@@ -2,6 +2,7 @@
 layout: page
 title: Tools
 permalink: /tools/
+description: "White 开发的在线工具集合：推文折叠预览工具、Web3 反女巫邀请构造器等实用小工具。"
 ---
 
 <div class="featured-articles tools-page">
