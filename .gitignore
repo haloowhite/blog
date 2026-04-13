@@ -2694,3 +2694,5 @@ vendor/
 *.log
 jekyll.log
 .claude/
+_premium_output/
+scripts/node_modules/

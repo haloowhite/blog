@@ -6,6 +6,10 @@ categories: [JSVMP, 逆向]
 tags: [有手就行系列, 逆向, JSVMP, 抖音, a_bogus, 补环境]
 description: "通过补环境方式实现抖音最新 bdms_1.0.1.19_fix 版本的 a_bogus 参数构造，详解 JSVMP 虚拟机原理与完整的逆向补环境实战流程。"
 excerpt: "本文将简单直接地带你一起通过补环境的方式，实现某音最新的a_bogus参数构造，并实现验证请求返回对应数据..."
+premium: true
+price: 29
+stripe_price_id: "price_dy_abogus_article"
+premium_summary: "本文付费内容包括：完整的 Node.js 补环境代码（window/document/navigator/localStorage 对象构造）、JSVMP 虚拟机加密函数入口定位技巧、a_bogus 参数截取与构造方法、热搜接口实战验证截图。"
 faq:
   - q: "什么是 JSVMP？"
     a: "JSVMP 是用 JavaScript 在前端实现的栈式虚拟机，通过 JS 实现原子操作（类似汇编指令），将关键加密逻辑混淆保护。特征是源码中有一个很长的字符串和一个包含循环 switch 结构的函数。"
@@ -36,6 +40,8 @@ faq:
 本文面对的抖音JSVMP可能难度会更高一些，等你真正实际上手的时候，发现几乎所有的逻辑都在走 `return X(e, this, arguments, r)` ，以及解释器函数 `function d()` 中不断循环。一般有几种解决方法，一是在 `d函数` 中将关键的函数调用、运算逻辑，以及堆栈变化等插桩打日志，然后根据打印的日志进行分析相关的逻辑和参数构造；还有一个是反编译，将关键的函数执行等分析出来再复现；再有就是，我们本文用的补环境大法，实现补齐代码中用到的浏览器环境，并构造相关的加密入口实现参数生成。
 
 
+
+<!-- paywall -->
 
 ## 2、补环境细节
 

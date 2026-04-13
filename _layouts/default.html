@@ -140,7 +140,14 @@
         "@type": "WebPage",
         "@id": "{{ page.url | absolute_url }}"
       }{% if page.tags %},
-      "keywords": {{ page.tags | jsonify }}{% endif %}
+      "keywords": {{ page.tags | jsonify }}{% endif %}{% if page.premium %},
+      "isAccessibleForFree": false,
+      "hasPart": [{
+        "@type": "WebPageElement",
+        "isAccessibleForFree": false,
+        "cssSelector": ".premium-content",
+        "description": {{ page.premium_summary | jsonify }}
+      }]{% endif %}
     }
     </script>
     {% else %}
@@ -229,6 +236,9 @@
 
 <!-- Code Copy Functionality -->
 <script src="{{ '/assets/js/code-copy.js' | relative_url }}"></script>
+{% if page.premium %}
+<script src="{{ '/assets/js/paywall.js' | relative_url }}"></script>
+{% endif %}
 
 <footer class="site-footer">
     <div class="footer-content">

@@ -24,6 +24,59 @@ layout: default
         {{ content }}
     </div>
 
+    {% if page.premium %}
+    <section class="paywall-gate" data-slug="{{ page.slug }}" itemscope itemtype="https://schema.org/CreativeWork">
+        <meta itemprop="isAccessibleForFree" content="false" />
+        <meta itemprop="name" content="{{ page.title }}" />
+        <meta itemprop="description" content="{{ page.premium_summary }}" />
+
+        <div class="paywall-fade"></div>
+
+        <div class="paywall-card">
+            <h3 class="paywall-title">Continue Reading</h3>
+            <p class="paywall-summary">{{ page.premium_summary }}</p>
+
+            <div class="paywall-options">
+                <button class="paywall-btn paywall-btn-article"
+                        data-slug="{{ page.slug }}"
+                        data-price-id="{{ page.stripe_price_id }}"
+                        data-type="article">
+                    解锁本文 &mdash; ¥{{ page.price }}
+                </button>
+                <button class="paywall-btn paywall-btn-sub"
+                        data-type="subscription">
+                    月度订阅 &mdash; ¥49/月 · 全站通行
+                </button>
+            </div>
+
+            <p class="paywall-restore-text">
+                已购买？<a href="#" class="paywall-restore-link">恢复访问权限</a>
+            </p>
+        </div>
+    </section>
+
+    <div class="premium-content" style="display:none"></div>
+
+    <!-- Restore Access Modal -->
+    <div class="paywall-modal" style="display:none">
+        <div class="paywall-modal-backdrop"></div>
+        <div class="paywall-modal-content">
+            <button class="paywall-modal-close">&times;</button>
+            <h3>恢复访问权限</h3>
+            <p>请输入您购买时使用的邮箱地址</p>
+            <div class="paywall-modal-step paywall-step-email">
+                <input type="email" class="paywall-input" placeholder="your@email.com" />
+                <button class="paywall-btn paywall-btn-send">发送验证码</button>
+            </div>
+            <div class="paywall-modal-step paywall-step-code" style="display:none">
+                <input type="text" class="paywall-input paywall-code-input" placeholder="6位验证码" maxlength="6" />
+                <button class="paywall-btn paywall-btn-verify">验证</button>
+            </div>
+            <p class="paywall-modal-error" style="display:none"></p>
+        </div>
+    </div>
+    {% endif %}
+
     {% if page.tags %}
     <div class="post-tags">
         <strong>标签：</strong>

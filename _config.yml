@@ -47,9 +47,20 @@ social:
   telegram: HalooWhite
   twitter: holaawhite
 
+# Paywall settings
+paywall:
+  api_url: "https://pay.haloowhite.com"
+  subscription_price_id: "price_monthly_subscription"
+  subscription_price: 49
+
 # Exclude from processing
 exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
   - vendor/
+  - worker/
+  - scripts/
+  - _premium_output/
+  - docs/
+  - node_modules/

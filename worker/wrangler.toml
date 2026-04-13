@@ -1,0 +1,20 @@
+name = "blog-paywall"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+[vars]
+BLOG_URL = "https://haloowhite.com"
+
+[[kv_namespaces]]
+binding = "PREMIUM_CONTENT"
+id = "REPLACE_WITH_KV_ID"
+
+[[kv_namespaces]]
+binding = "VERIFY_CODES"
+id = "REPLACE_WITH_KV_ID"
+
+# Secrets (set via `wrangler secret put`):
+# STRIPE_SECRET_KEY
+# STRIPE_WEBHOOK_SECRET
+# RESEND_API_KEY
+# JWT_SECRET

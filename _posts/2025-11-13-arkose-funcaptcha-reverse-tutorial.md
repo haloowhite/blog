@@ -6,6 +6,10 @@ categories: [验证码, 逆向]
 tags: [验证码, 逆向, ArkoseLabs, FunCaptcha, 协议分析]
 description: "深入解析 ArkoseLabs FunCaptcha 验证码的完整请求链路、AES/RSA 加密机制、设备指纹构造与风控策略，附完整协议逆向实战教程。"
 excerpt: "这次不用带手，我们一起深入浅出关于FunCaptcha你所需要知道的一切..."
+premium: true
+price: 29
+stripe_price_id: "price_arkose_article"
+premium_summary: "本文付费内容包括：完整的 AES-GCM/RSA-OAEP 加密参数 Python 实现、EVP_BytesToKey 密钥派生与 AES-CBC 解密代码、guess/tguess/x-requested-id 参数构造详解、设备指纹与 TLS/JA3 风控策略、以及完整协议逆向实战验证截图。"
 faq:
   - q: "FunCaptcha 的完整请求链路包含哪些步骤？"
     a: "包含4个核心步骤：1) 获取 session token；2) 可选的 PoW 挑战；3) 获取/刷新验证码详情；4) 提交验证码答案并获取结果。"
@@ -51,6 +55,8 @@ faq:
 ![提交验证码接口结果](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/submit-result.png)
 
 这一步提交后，如果未完成所有的验证的话，则response为`not answered` ，`_challenge_imgs` 是下一张验证码的图片地址。如果当前是最后一张验证码，通过验证后是 `response` 字段为 `answered`，`solved` 为 `true` ，反之则是 `false` ，中间有问题回答错了。这一步实则是链式地提交验证码结果，直到所有的验证码都提交答案了，才会得知最终是否通过了验证
+
+<!-- paywall -->
 
 ## 二、相关请求参数和结果的详细解析
 
