@@ -54,12 +54,12 @@ GET 请求目标站点，403 响应返回一个简洁的 HTML 挑战页面。关
 ```javascript
 window._cf_chl_opt = {
     cvId: '3',
-    cZone: 'fastlink.so',
-    cType: 'interactive',       // 挑战类型：interactive / managed
-    cRay: '9eb833680f13fcf8',   // 请求 Ray ID
-    cH: 'j9_nAkRY.6cKOoF...',  // 挑战哈希
-    cFPWv: 'g',                 // 路径前缀标识：g 或 b
-    cITimeS: '1776059505',      // 服务器时间戳
+    cZone: 'target.example.com',  // 目标站点域名
+    cType: 'interactive',          // 挑战类型：interactive / managed
+    cRay: '9eb833680f13fcf8',      // 请求 Ray ID
+    cH: 'j9_nAkRY.6cKOoF...',     // 挑战哈希
+    cFPWv: 'g',                    // 路径前缀标识：g 或 b
+    cITimeS: '1776059505',         // 服务器时间戳
     md: '...',                  // 挑战元数据（超长字符串）
     cTplC: 0,
     cTplO: 0,                   // 新增属性
@@ -80,6 +80,7 @@ _cf_chl_opt_dict = demjson3.decode(_cf_chl_opt[0])
 同时从 HTML 中提取 ray JS 路径：
 
 ```html
+<!-- 实际站点的 ray JS 加载标签 -->
 <script src="/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1?ray=9eb833680f13fcf8"></script>
 ```
 
@@ -399,7 +400,41 @@ traverse(ast, {
 });
 ```
 
-### 3.3 花指令消除（运算型）
+### 3.3 序列表达式改造（花指令预处理）
+
+在消除花指令之前，需要先处理一种特殊形式——函数体中有序列表达式（逗号表达式）的情况：
+
+```javascript
+// 改造前：先赋值再运算
+'TqoiZ': function(n, P, c3) {
+  return c3 = M, K['gHAaX'](n, P);  // SequenceExpression
+}
+
+// 改造后：只保留最后一个表达式
+'TqoiZ': function(n, P, c3) {
+  return K['gHAaX'](n, P);
+}
+```
+
+处理逻辑：如果函数体只有一个 return，但 return 的是 `SequenceExpression`，则取最后一个表达式替换整个序列：
+
+```javascript
+traverse(ast, {
+  ObjectProperty(path) {
+    const node = path.node;
+    if (!t.isFunctionExpression(node.value)) return;
+    const returnArg = node.value.body.body[0].argument;
+    if (t.isSequenceExpression(returnArg) && returnArg.expressions.length > 1) {
+      // 取最后一个表达式，丢弃前面的赋值
+      node.value.body.body[0].argument = returnArg.expressions.pop();
+    }
+  }
+});
+```
+
+这一步改造后，这些函数就符合标准花指令的形态了，后续可以统一处理。
+
+### 3.4 花指令消除（运算型）
 
 大量简单运算被包装成函数调用：
 
@@ -424,7 +459,7 @@ function isObfuscatedFunction(node) {
 
 **关键：需要多轮迭代**。花指令可能嵌套引用：`A['fn1'](B['fn2'](x, y), z)`，展开 `fn1` 后内部的 `fn2` 才暴露出来。代码中循环 3 次确保清除。
 
-### 3.4 花指令消除（函数调用型）
+### 3.5 花指令消除（函数调用型）
 
 更复杂的一种 —— 包装函数调用而非运算符：
 
@@ -447,7 +482,7 @@ if (paramList.length - 1 === newExpr.arguments.length) {
 }
 ```
 
-### 3.5 死代码消除
+### 3.6 死代码消除
 
 混淆器插入大量永假条件分支：
 
@@ -470,7 +505,7 @@ traverse(ast, {
 });
 ```
 
-### 3.6 控制流平坦化还原
+### 3.7 控制流平坦化还原
 
 经典 Split-Switch 模式：
 
@@ -490,18 +525,56 @@ step4(); step5(); step0(); step2(); step3(); step1();
 
 实现逻辑：从 init 中提取顺序数组，建立 case→代码块映射，按序展开，替换整个 for 语句。
 
-### 3.7 反混淆流水线
+### 3.8 死变量消除
 
-完整的处理流程：
+经过前面的处理后，代码中会残留大量不再被引用的变量赋值。通过作用域分析自动清理：
+
+```javascript
+function sweep(rootPath) {
+  rootPath.traverse({
+    AssignmentExpression(path) {
+      if (!t.isIdentifier(path.node.left)) return;
+      const name = path.node.left.name;
+      // 检查赋值后是否还有读取
+      if (!hasReadAfter(path, name)) {
+        const right = path.get('right');
+        if (right.isPure()) {
+          // 右侧无副作用 → 直接删除
+          path.getStatementParent()?.remove();
+        } else {
+          // 右侧有副作用 → 保留右值表达式，只去掉赋值
+          path.replaceWith(right.node);
+        }
+      }
+    }
+  });
+}
+```
+
+`hasReadAfter` 沿语句链向后扫描：若先遇到同名写入（覆盖），说明当前是死写入，可删；若遇到读取则保留。这一步能清掉大量 `NK = { W: 1186, J: 735 }` 这样已无用的中间映射对象。
+
+### 3.9 反混淆流水线
+
+完整的处理流程（单脚本自动化版）：
 
 ```
-raw.js                     ← 原始 ray JS
-  ↓ handle.js              ← 主 AST（字符串解密 + 花指令 + 死代码 + 控制流）
-result.js
-  ↓ 二次处理.py             ← 正则清理残留格式
-output.js
-  ↓ handle-去除花指令.js     ← 二次 AST（深层花指令 + 字符串映射花指令）
-final_output.js            ← 可读代码
+raw.js                     ← 原始 ray JS（~200KB 单行混淆）
+  ↓ handle.js 一次性处理：
+  │  1. 提取字符串大数组 + 偏移量
+  │  2. 本地执行 shuffle 还原正确顺序
+  │  3. 字符串解密替换（中间变量映射 + 直接调用）
+  │  4. 建立字符串花指令映射表
+  │  5. 序列表达式改造（花指令预处理）
+  │  6. 运算花指令消除 × 3 轮迭代
+  │  7. 字符串花指令替换 × 3 轮迭代
+  │  8. 函数调用花指令替换 × 3 轮迭代
+  │  9. 控制流平坦化还原（split-switch）
+  │  10. 死代码消除（常量条件折叠）
+  │  11. 清理残留定义（数值映射、函数壳）
+  │  12. 删除 shuffle 残留逻辑
+  │  13. 死变量消除（作用域分析）
+  ↓
+result.js                  ← 可读代码
 ```
 
 ## 4、新版变化：JSVMP 的引入
