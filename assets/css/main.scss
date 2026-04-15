@@ -1510,3 +1510,18 @@ body {
     }
   }
 }
+
+// Hero Hook
+.hero-hook {
+  text-align: center;
+  padding: 0 0 1.5rem 0;
+  margin-bottom: 0.5rem;
+
+  .hook-text {
+    font-size: 0.95rem;
+    color: $text-light;
+    letter-spacing: 0.02em;
+    margin: 0;
+    font-style: italic;
+  }
+}

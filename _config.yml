@@ -39,7 +39,7 @@ collections:
     permalink: /:year/:month/:day/:title/
 
 # Custom variables
-author_bio: "White is absolutely obsessed with Feynman—so much so that he chose Feynman as his avatar. He strives to present every complex concept in a straightforward, simple way. As a committed minimalist, he brings a passionate and curious spirit to life, immersing himself in reading and pursuing new experiences. Above all, White firmly believes no one has real limitations—time is the greatest lever of all. Don’t waste yours!"
+author_bio: "我很喜欢费曼，并且我也坚信最好的学习方式是通过实践和分享。希望通过输出倒逼输入的形式，让我可以更专注我所感兴趣的任何东西，而不只是一知半解。"
 
 # Social links
 social:
