@@ -132,10 +132,12 @@ $icon-black: #000;
 }
 
 body {
-  font-family: "Newsreader", serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
+               "Microsoft YaHei", system-ui, sans-serif;
   background-color: $off-white;
   color: $text-dark;
-  line-height: 1.6;
+  line-height: 1.75;
   font-feature-settings: "liga" 1, "kern" 1;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
