@@ -175,17 +175,16 @@ body {
 
 .sidebar {
   width: 350px;
+  flex-shrink: 0;
   background-color: $primary-gray;
   padding: 60px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 50%;
-  transform: translateX(-600px);
-  height: 100vh;
+  align-self: stretch;
   overflow-y: auto;
 
   .author-name {
@@ -242,8 +241,8 @@ body {
 
 .main-content {
   flex: 1;
+  min-width: 0;
   padding: 60px 50px;
-  margin-left: 350px;
 
 
   .nav-header {
@@ -1457,7 +1456,7 @@ body {
 // Site Footer
 .site-footer {
   margin-top: 80px;
-  padding: 24px 0;
+  padding: 24px 0 0;
   border-top: 1px solid $border-color;
 
   .footer-content {
