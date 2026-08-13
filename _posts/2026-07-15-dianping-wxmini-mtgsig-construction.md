@@ -54,7 +54,7 @@ induction/wxmp/@mtfe/wx-jsguard/jsguard.js
 
 ![wxapkg 解包路径示意](/assets/images/mtgsig/mtgsig-wxapkg-tree.png)
 
-解 wxapkg → 反混淆 → 搜 `calcmtgsig` / `header.mtgsig`，就能落到真正的组装函数。后面所有算法都是从这里抠出来的。`jsguard.js` 外层通常很脏，可以直接丢到 [Astify Playground](https://astify.dev/playground) 在线解，[Astify](https://astify.dev/) 免费就能跑，解开再搜函数名会比在单行压缩文件里翻快很多。
+解 wxapkg → 反混淆 → 搜 `calcmtgsig` / `header.mtgsig`，就能落到真正的组装函数。后面所有算法都是从这里抠出来的。
 
 > **声明**：仅供安全研究与技术学习交流。密钥、openid、dpid、指纹串等一律打码或改写；请勿对线上业务造成干扰。
 
@@ -139,7 +139,7 @@ Python 发请求；服务端按「自洽性」校验 a4/d1
 3. 在包里搜 `mtgsig`、`jsguard`、`calcmtgsig`
 4. 定位到 `@mtfe/wx-jsguard` 模块
 
-反混淆后（懒得自己写流水线就丢 [Astify Playground](https://astify.dev/playground)），核心组装大概是这种形态（变量名已简化）：
+反混淆后，核心组装大概是这种形态（变量名已简化）：
 
 ![wx-jsguard 中 calcmtgsig 字段组装片段](/assets/images/mtgsig/mtgsig-jsguard-snippet.png)
 

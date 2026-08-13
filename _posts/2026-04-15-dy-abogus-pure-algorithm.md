@@ -15,13 +15,11 @@ faq:
     a: "正常。位掩码扩展步骤会注入随机字节，但核心数据（时间戳、URL哈希）是确定性的，服务端验证的是这些。"
   - q: "盐值 dhzx 会变吗？"
     a: "不同版本可能不同。dhzx 是 1.0.1.19 版本的，存在 VMP 常量池 index=262。拿到新版 JS 在常量池里搜即可。"
-  - q: "新版 JS 怎么快速看清常量池？"
-    a: "先把外层混淆解开。Astify Playground（https://astify.dev/playground）可以在线免费解 bdms 这类 JSVMP 文件，解完再在常量池里搜盐值会快很多。"
 ---
 
 ## 0、背景
 
-某音的 `a_bogus` 参数由 bdms SDK（V 1.0.1.19-fix.01）生成，保护在一个 76 opcode 的 JSVMP 虚拟机里。本文把整个签名算法从字节码中完整逆出来，Python 纯算实现，输出 **192 字符**，和浏览器生成的逐字节一致。新版 JS 下来先解一层外层混淆会好找常量池，懒得写脚本的话丢 [Astify Playground](https://astify.dev/playground) 就行，[Astify](https://astify.dev/) 对 JSVMP 这类文件比较熟。
+某音的 `a_bogus` 参数由 bdms SDK（V 1.0.1.19-fix.01）生成，保护在一个 76 opcode 的 JSVMP 虚拟机里。本文把整个签名算法从字节码中完整逆出来，Python 纯算实现，输出 **192 字符**，和浏览器生成的逐字节一致。
 
 效果先放（评论、热搜、Feed 三个接口全部验证通过）：
 
@@ -246,7 +244,7 @@ A: 正常，位掩码扩展注入了随机因子。核心数据（哈希/时间�
 
 **Q: 盐值 "dhzx" 会变吗？**
 
-A: 不同版本可能不同。在 VMP 常量池里搜 4 字符字符串就能找到。新版 JS 太脏的话，先丢 [Astify Playground](https://astify.dev/playground) 解开再搜。
+A: 不同版本可能不同。在 VMP 常量池里搜 4 字符字符串就能找到。
 
 **Q: 怎么识别 SM3？**
 

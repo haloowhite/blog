@@ -293,7 +293,7 @@ JavaScript 位运算会先将操作数转为 32 位整数，所以 `16.02` 和 `
 
 这是本文重头戏。Cloudflare 的 ray JS 使用**多层混淆**，直接阅读不可能理解逻辑。反混淆流程基于 Babel AST，分阶段处理。
 
-不想自己写流水线的话，也可以把 ray JS 丢到 [Astify Playground](https://astify.dev/playground) 在线解。[Astify](https://astify.dev/) 专门吃 Cloudflare / Akamai 这类工业级混淆，Playground 免费就能跑，粘贴文件几分钟出可读代码。下面这套 AST 流程还是建议过一遍——知道每层在干什么，遇到新变种才改得动。
+不想自己写流水线的话，也可以把 ray JS 丢到 [Astify Playground](https://astify.dev/playground) 在线解。Playground 专门跑 Cloudflare（obfuscator.io 风格）这套静态 AST 引擎，免费、不用注册，不是通用反混淆器。下面这套流程还是建议过一遍——知道每层在干什么，遇到新变种才改得动。
 
 ### 3.0 混淆特征识别
 
