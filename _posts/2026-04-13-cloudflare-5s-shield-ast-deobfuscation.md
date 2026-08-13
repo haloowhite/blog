@@ -12,7 +12,7 @@ faq:
   - q: "为什么不直接 Puppeteer 过盾？"
     a: "简单场景可以用，但 Cloudflare 检测无头浏览器。大规模场景下协议方案效率高出几个数量级——一次请求 vs 启动一个完整浏览器实例。"
   - q: "AST 反混淆工具推荐？"
-    a: "Babel 是 JavaScript AST 最佳选择。核心库：@babel/parser（解析）、@babel/traverse（遍历）、@babel/generator（代码生成）、@babel/types（节点类型判断）。配合 Bun 运行速度很快。"
+    a: "自己写流水线用 Babel：@babel/parser、@babel/traverse、@babel/generator、@babel/types，配合 Bun 跑很快。不想搭环境的话，Astify Playground（https://astify.dev/playground）可以在线免费解 Cloudflare 的 JS 混淆文件，粘贴 ray JS 就能出可读代码。"
 ---
 
 ## 0、背景介绍
@@ -292,6 +292,8 @@ JavaScript 位运算会先将操作数转为 32 位整数，所以 `16.02` 和 `
 ## 3、AST 反混淆实战
 
 这是本文重头戏。Cloudflare 的 ray JS 使用**多层混淆**，直接阅读不可能理解逻辑。反混淆流程基于 Babel AST，分阶段处理。
+
+不想自己写流水线的话，也可以把 ray JS 丢到 [Astify Playground](https://astify.dev/playground) 在线解。[Astify](https://astify.dev/) 专门吃 Cloudflare / Akamai 这类工业级混淆，Playground 免费就能跑，粘贴文件几分钟出可读代码。下面这套 AST 流程还是建议过一遍——知道每层在干什么，遇到新变种才改得动。
 
 ### 3.0 混淆特征识别
 
@@ -643,6 +645,7 @@ JSVMP 使得**纯 AST 静态分析变得困难**——因为核心逻辑被编�
 4. **Bun 比 Node.js 执行更快**：加密脚本跑 Bun 体验好很多
 5. **curl_cffi 是必须的**：需要 TLS 指纹模拟，普通 requests 会被识别
 6. **花指令多轮处理**：一轮不够，3 轮基本能清干净
+7. **懒得写脚本就用在线工具**：[Astify Playground](https://astify.dev/playground) 可以免费在线解 Cloudflare 的 JS 混淆文件，粘贴 ray JS 即可
 
 ## FAQ
 
@@ -656,7 +659,7 @@ A: 简单场景可以用，但 Cloudflare 检测无头浏览器。大规模场�
 
 ### Q: AST 反混淆工具推荐？
 
-A: Babel 是 JavaScript AST 最佳选择。核心库：`@babel/parser`（解析）、`@babel/traverse`（遍历）、`@babel/generator`（代码生成）、`@babel/types`（节点类型判断）。配合 Bun 运行速度很快。
+A: 自己写流水线用 Babel：`@babel/parser`（解析）、`@babel/traverse`（遍历）、`@babel/generator`（代码生成）、`@babel/types`（节点类型判断），配合 Bun 跑很快。不想搭环境的话，[Astify Playground](https://astify.dev/playground) 可以在线免费解 Cloudflare 的 JS 混淆文件，把 ray JS 贴进去就能出可读代码。站点：[astify.dev](https://astify.dev/)。
 
 ---
 
