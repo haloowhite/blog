@@ -228,20 +228,20 @@
             </ul>
         </nav>
         {{ content }}
+
+        <footer class="site-footer">
+            <div class="footer-content">
+                <p>&copy; {{ 'now' | date: "%Y" }} {{ site.author }}. All rights reserved.</p>
+                <nav class="footer-nav">
+                    <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a>
+                    <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+                </nav>
+            </div>
+        </footer>
     </main>
 </div>
 
 <!-- Code Copy Functionality -->
 <script src="{{ '/assets/js/code-copy.js' | relative_url }}"></script>
-
-<footer class="site-footer">
-    <div class="footer-content">
-        <p>&copy; {{ 'now' | date: "%Y" }} {{ site.author }}. All rights reserved.</p>
-        <nav class="footer-nav">
-            <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a>
-            <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
-        </nav>
-    </div>
-</footer>
 </body>
 </html>
