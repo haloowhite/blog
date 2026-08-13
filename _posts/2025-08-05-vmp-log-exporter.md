@@ -13,7 +13,7 @@ faq:
     a: "在浏览器 console 中先粘贴运行导出代码，然后执行你需要分析的业务逻辑，等日志打印完毕后在 console 中执行 console.save() 即可将所有日志导出为本地文件。"
 ---
 
-在运行之前将以下这段代码贴进console中运行，然后执行需要的逻辑，待日志完全打印，手动在console执行 `console.save()`，即可立马将所有的日志导出为本地文件。插桩之前如果源码还是一团，可以先把 JSVMP 文件丢到 [Astify Playground](https://astify.dev/playground) 解一层，看清解释器入口再打日志。
+在运行之前将以下这段代码贴进console中运行，然后执行需要的逻辑，待日志完全打印，手动在console执行 `console.save()`，即可立马将所有的日志导出为本地文件
 
 接下来就可以安安心心在本地分析日志内容了
 ```javascript

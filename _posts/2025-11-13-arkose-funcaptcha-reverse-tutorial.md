@@ -32,7 +32,7 @@ faq:
 
 ![Session Token 接口返回结果](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/session-token.png)
 
-这一步至关重要，这一步提交的data涉及到你的设备指纹信息，将决定后续你是否需要pow验证，以及相关的验证码难度和数量等。如果构造的设备指纹或请求指纹太劣质，甚至将会被直接拒绝返回 `{"error":"DENIED ACCESS"}`，或者在步骤3时直接返回 `{"error":"DENIED ACCESS"}`。这一步需要重点关注的是response里的`token` 字段分隔符 `|` 第一个值即为token，这里是 `26318777fbd628c58.1761804104` ，这个token将贯穿整个验证流程。cdn里的js代码是动态变化的，这一点和CloudFlare类似。`api.js` 本身也是混淆过的，想先读逻辑可以把文件丢到 [Astify Playground](https://astify.dev/playground) 在线解，[Astify](https://astify.dev/) 免费就能跑。
+这一步至关重要，这一步提交的data涉及到你的设备指纹信息，将决定后续你是否需要pow验证，以及相关的验证码难度和数量等。如果构造的设备指纹或请求指纹太劣质，甚至将会被直接拒绝返回 `{"error":"DENIED ACCESS"}`，或者在步骤3时直接返回 `{"error":"DENIED ACCESS"}`。这一步需要重点关注的是response里的`token` 字段分隔符 `|` 第一个值即为token，这里是 `26318777fbd628c58.1761804104` ，这个token将贯穿整个验证流程。cdn里的js代码是动态变化的，这一点和CloudFlare类似。
 
 ### **2、【Optional】Pow挑战，如果步骤一中返回结果中需要pow挑战，需要先进行pow挑战，并提交相关结果给服务器，根据返回结果**
 
@@ -150,7 +150,7 @@ def rsa_encrypt_arkose(fp_data: dict):
 
 
 
-这也就意味着 AES 的密钥是经过 RSA 加密后的，也就无法直接从 `c` 字段里拿到的数据直接base64解码拿到密钥明文。如果对设备指纹明文感兴趣的话，可以在  `api.js` 文件 (https://client-api.arkoselabs.com/v2/{替换为为对应的public-key}/api.js) 里搜索 `bda` 关键词，找到位于`case 21:` 的位置，往上找到 `case 9:` 位置的 `Cn(r, Fo, Do.publicKey, si);`  即该分支的最后一个函数调用，第一个 参数 `r` 即为设备指纹原文数组，如下图所示。`api.js` 是混淆过的，直接搜有时对不上，可以先丢 [Astify Playground](https://astify.dev/playground) 解开再搜 `bda`：
+这也就意味着 AES 的密钥是经过 RSA 加密后的，也就无法直接从 `c` 字段里拿到的数据直接base64解码拿到密钥明文。如果对设备指纹明文感兴趣的话，可以在  `api.js` 文件 (https://client-api.arkoselabs.com/v2/{替换为为对应的public-key}/api.js) 里搜索 `bda` 关键词，找到位于`case 21:` 的位置，往上找到 `case 9:` 位置的 `Cn(r, Fo, Do.publicKey, si);`  即该分支的最后一个函数调用，第一个 参数 `r` 即为设备指纹原文数组，如下图所示：
 
 ![环境指纹明文数组查找](https://pub-df7ca5ef070b4d47a2a7c8b98941cb71.r2.dev/fp-content.png)
 
