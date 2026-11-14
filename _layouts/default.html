@@ -13,6 +13,8 @@
     <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ',' }}{% else %}Web Scraping,逆向工程,JSVMP,技术博客{% endif %}" />
     <meta name="author" content="{{ site.author }}" />
     <meta name="robots" content="index,follow" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
 
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="{{ '/favicon.ico' | relative_url }}" />
@@ -20,24 +22,40 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ '/favicon-16x16.png' | relative_url }}" />
     <link rel="apple-touch-icon" sizes="180x180" href="{{ '/apple-touch-icon.png' | relative_url }}" />
 
-    <!-- Google Fonts -->
+    <!-- The "White" wordmark: Grape Nuts, served from this site so it never
+         depends on a third party. Preloaded so the name is right on first paint. -->
     <link
-            rel="preconnect"
-            href="https://fonts.googleapis.com"
-    />
-    <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
+            rel="preload"
+            href="{{ '/assets/fonts/grape-nuts-latin-400-normal.woff2' | relative_url }}"
+            as="font"
+            type="font/woff2"
             crossorigin
     />
-    <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Newsreader:ital,wght@0,400;0,600;0,700;1,400&family=Grape+Nuts&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    />
 
+    <!-- JetBrains Mono, for code. Loaded without blocking render; body text
+         uses the system stack and code falls back to the system monospace, so
+         the page is complete even if this request never returns. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
             rel="stylesheet"
-            href="{{ '/assets/css/main.css' | relative_url }}"
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap"
+            media="print"
+            onload="this.media='all'"
+    />
+    <noscript>
+        <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap"
+        />
+    </noscript>
+
+    <!-- The host lets browsers cache CSS and JS for hours. The build time in
+         the query makes every deploy a new URL, so a returning visitor never
+         gets new markup with an old stylesheet. -->
+    <link
+            rel="stylesheet"
+            href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}"
     />
     <link
             rel="canonical"
@@ -91,12 +109,6 @@
     <meta
             name="twitter:image"
             content="{% if page.image %}{{ page.image | absolute_url }}{% else %}{{ '/assets/images/feynman.jpg' | absolute_url }}{% endif %}"
-    />
-
-    <!-- Font Awesome Icons -->
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
 
     <!-- RSS Feed -->
@@ -166,73 +178,56 @@
       }
     }
     </script>
+    {% if page.url == "/contact/" %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "name": {{ page.title | jsonify }},
+      "description": {{ page.description | jsonify }},
+      "url": "{{ page.url | absolute_url }}",
+      "inLanguage": "{{ site.lang }}",
+      "mainEntity": {
+        "@type": "Person",
+        "name": {{ site.author | jsonify }},
+        "url": "{{ site.url }}",
+        "email": {{ site.email | jsonify }},
+        "sameAs": [
+          "https://x.com/holaawhite",
+          "https://t.me/haloowhite"
+        ]
+      }
+    }
+    </script>
+    {% endif %}
     {% endif %}
 </head>
 <body>
-<div class="site-container">
-    <aside class="sidebar">
-        <h1 class="author-name">{{ site.author }}</h1>
-        <p class="author-title">{{ site.tagline }}</p>
-        <img
-                src="{{ '/assets/images/feynman.jpg' | relative_url }}"
-                alt="Richard Feynman"
-                class="author-photo"
-        />
-        <div class="social-links">
-            <a
-                    href="https://t.me/haloowhite"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-icon"
-                    aria-label="Telegram"
-            ><i class="fa-brands fa-telegram"></i></a
-            >
-            <a href="https://x.com/holaawhite" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-        </div>
-    </aside>
-
-    <main class="main-content">
-        <nav class="nav-header">
-            <ul class="nav-menu">
-                <li>
-                    <a href="{{ '/' | relative_url }}"
-                       {% if page.url=="/" %}class="active"
-                       {% endif %}
-                    >Home</a
-                    >
-                </li>
-                <li>
-                    <a href="{{ '/archive/' | relative_url }}"
-                       {% if page.url=="/archive/" %}class="active" {% endif %}
-                    >Archive</a
-                    >
-                </li>
-                <li>
-                    <a href="{{ '/tools/' | relative_url }}"
-                       {% if page.url=="/tools/" %}class="active" {% endif %}
-                    >Tools</a
-                    >
-                </li>
-                <li>
-                    <a class="active" href="https://t.me/haloowhite" target="_blank" rel="noopener noreferrer">Contact</a>
-                </li>
-            </ul>
+<div class="site">
+    <header class="site-header">
+        {% if page.url == "/" %}{% assign title_tag = "h1" %}{% else %}{% assign title_tag = "p" %}{% endif %}
+        <{{ title_tag }} class="site-title"><a href="{{ '/' | relative_url }}">{{ site.author }}</a></{{ title_tag }}>
+        <nav class="site-nav" aria-label="Main">
+            <a href="{{ '/tools/' | relative_url }}"{% if page.url == "/tools/" %} aria-current="page"{% endif %}>Tools</a>
+            <a href="{{ '/contact/' | relative_url }}"{% if page.url == "/contact/" %} aria-current="page"{% endif %}>Contact</a>
         </nav>
-        {{ content }}
+    </header>
 
-        <footer class="site-footer">
-            <div class="footer-content">
-                <p>&copy; {{ 'now' | date: "%Y" }} {{ site.author }}. All rights reserved.</p>
-                <nav class="footer-nav">
-                    <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a>
-                    <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
-                </nav>
-            </div>
-        </footer>
+    <main class="site-main">
+        {{ content }}
     </main>
+
+    <footer class="site-footer">
+        <p>&copy; {{ 'now' | date: "%Y" }} {{ site.author }}. All rights reserved.</p>
+        <nav class="footer-nav" aria-label="Footer">
+            <a href="https://t.me/haloowhite" target="_blank" rel="noopener noreferrer">Telegram</a>
+            <a href="https://x.com/holaawhite" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">X</a>
+            <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a>
+            <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+        </nav>
+    </footer>
 </div>
 
-<!-- Code Copy Functionality -->
-<script src="{{ '/assets/js/code-copy.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/code-copy.js' | relative_url }}?v={{ site.time | date: '%s' }}" defer></script>
 </body>
 </html>

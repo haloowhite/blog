@@ -1,0 +1,27 @@
+{% comment %}
+  Every post, newest first, grouped by year. Used by the home page and by
+  /archive/, so the two can never disagree.
+{% endcomment %}
+{% assign years = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+{% for year in years %}
+<section class="archive-year">
+  <h2 class="section-title">{{ year.name }}</h2>
+  <div class="entries">
+    {% for post in year.items %}
+    <a href="{{ post.url | relative_url }}" class="entry">
+      <time class="entry-date" datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%m-%d" }}</time>
+      <span class="entry-title">{{ post.title }}</span>
+      {% if post.categories %}<span class="entry-note">{{ post.categories | join: ", " }}</span>{% endif %}
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
+{% if site.posts.size == 0 %}
+<div class="entries">
+  <div class="entry entry--plain">
+    <span class="entry-title">Welcome to White's Garden</span>
+    <span class="entry-note">Coming Soon...</span>
+  </div>
+</div>
+{% endif %}

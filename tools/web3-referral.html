@@ -8,6 +8,8 @@
     <meta name="keywords" content="Web3,反女巫,邀请构造器,撸毛工具,区块链,邀请链,社交网络,算法,在线工具">
     <meta name="author" content="White">
     <meta name="robots" content="index, follow">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#000000">
 
     <!-- Open Graph tags -->
     <meta property="og:title" content="Web3反女巫邀请构造器 - 智能邀请结构生成工具">
@@ -58,81 +60,108 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
-            background: #f5f5f7;
-            padding: 40px 20px;
-            min-height: 100vh;
-            color: #1d1d1f;
+        /* Monochrome, matching the blog. The only colours on this page are the
+           three account states (normal / half / dead), because they are data. */
+        :root {
+            color-scheme: dark;
+            --bg: #000;
+            --fg: #fff;
+            --text: #e2e2e2;
+            --muted: #a3a3a3;
+            --faint: #7c7c7c;
+            --line: #222;
+            --line-strong: #3d3d3d;
+            --surface: #0b0b0b;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { background: var(--bg); }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+            background: var(--bg);
+            padding: 40px 24px 64px;
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--fg); color: var(--bg); }
+
+        :focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+
         .container {
-            max-width: 1600px;
+            max-width: 1280px;
             margin: 0 auto;
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 48px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 56px;
+            color: var(--fg);
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
         }
 
         h1 {
-            font-size: 48px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 12px;
-            color: #1d1d1f;
+            font-size: clamp(28px, 5vw, 36px);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 16px;
+            color: var(--fg);
         }
 
         .subtitle {
-            font-size: 17px;
-            color: #6e6e73;
-            line-height: 1.6;
+            max-width: 720px;
+            font-size: 16px;
+            color: var(--muted);
+            line-height: 1.8;
             margin-bottom: 48px;
-            font-weight: 400;
         }
 
         .algorithm-box {
-            background: #f5f5f7;
-            padding: 32px;
-            border-radius: 12px;
+            padding: 28px 0;
             margin-bottom: 40px;
-            border: 1px solid #e5e5e7;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
         }
 
         .algorithm-box h3 {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #1d1d1f;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--muted);
         }
 
         .algorithm-box ul {
-            margin-left: 24px;
-            color: #1d1d1f;
+            margin-left: 20px;
+            color: var(--text);
             line-height: 1.8;
             font-size: 15px;
         }
 
         .algorithm-box li {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+        }
+
+        .algorithm-box li::marker {
+            color: var(--faint);
         }
 
         .algorithm-box strong {
             font-weight: 600;
-            color: #000000;
+            color: var(--fg);
         }
 
         .controls {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
-            margin-bottom: 40px;
-            background: #fbfbfd;
-            padding: 32px;
-            border-radius: 12px;
-            border: 1px solid #e5e5e7;
+            margin-bottom: 48px;
         }
 
         .input-group {
@@ -141,280 +170,277 @@
         }
 
         label {
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #1d1d1f;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--fg);
             font-size: 15px;
         }
 
         label .hint {
             font-weight: 400;
-            color: #86868b;
+            color: var(--faint);
             font-size: 13px;
             display: block;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         input {
-            padding: 14px 16px;
-            border: 1px solid #d2d2d7;
-            border-radius: 10px;
-            font-size: 17px;
-            background: #ffffff;
-            transition: all 0.2s ease;
+            padding: 12px 14px;
+            border: 1px solid var(--line-strong);
+            border-radius: 6px;
+            font: inherit;
+            font-size: 16px;
+            background: transparent;
+            color: var(--fg);
+            transition: border-color 0.15s;
         }
 
         input:focus {
             outline: none;
-            border-color: #007AFF;
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+            border-color: var(--fg);
         }
 
         .btn-generate {
             grid-column: 1 / -1;
-            padding: 18px;
+            padding: 14px;
             border: none;
-            border-radius: 12px;
-            font-size: 17px;
-            font-weight: 600;
+            border-radius: 6px;
+            font: inherit;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            background: #007AFF;
-            color: #ffffff;
-            transition: all 0.2s ease;
-            margin-top: 16px;
+            background: var(--fg);
+            color: var(--bg);
+            transition: background-color 0.15s;
         }
 
         .btn-generate:hover {
-            background: #0051D5;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 16px rgba(0, 122, 255, 0.3);
-        }
-
-        .btn-generate:active {
-            transform: translateY(0);
+            background: #d4d4d4;
         }
 
         .results {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
             margin-bottom: 40px;
         }
 
         .stat-card {
-            background: #fbfbfd;
-            padding: 24px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid #e5e5e7;
-            transition: all 0.2s ease;
-        }
-
-        .stat-card:hover {
-            border-color: #d2d2d7;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
         }
 
         .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-            color: #007AFF;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
+            font-size: 30px;
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--fg);
+            margin-bottom: 6px;
+            font-variant-numeric: tabular-nums;
         }
 
         .stat-label {
             font-size: 13px;
-            color: #6e6e73;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: var(--muted);
         }
 
         .metrics {
-            background: #fbfbfd;
-            padding: 32px;
-            border-radius: 12px;
-            margin-bottom: 32px;
-            border: 1px solid #e5e5e7;
+            margin-bottom: 40px;
         }
 
         .metrics h3 {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #1d1d1f;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            color: var(--muted);
         }
 
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
+            gap: 12px;
         }
 
         .metric-item {
-            background: #ffffff;
-            padding: 16px;
+            padding: 14px 16px;
             border-radius: 8px;
-            border: 1px solid #e5e5e7;
+            border: 1px solid var(--line);
             font-size: 14px;
-            color: #1d1d1f;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
         }
 
         .metric-item strong {
             font-weight: 600;
-            color: #000000;
+            color: var(--fg);
+        }
+
+        .metric-item small {
+            color: var(--faint);
         }
 
         .visualization-controls {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .layout-switch {
             display: flex;
-            gap: 8px;
-            background: #f5f5f7;
-            padding: 4px;
-            border-radius: 10px;
+            gap: 4px;
+            padding: 3px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
         }
 
         .layout-btn {
-            padding: 10px 20px;
+            padding: 7px 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
+            font: inherit;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             background: transparent;
-            color: #6e6e73;
-            transition: all 0.2s ease;
+            color: var(--muted);
+            transition: color 0.15s, background-color 0.15s;
+        }
+
+        .layout-btn:hover {
+            color: var(--fg);
         }
 
         .layout-btn.active {
-            background: #007AFF;
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0, 122, 255, 0.25);
+            background: var(--fg);
+            color: var(--bg);
         }
 
         .legend {
             display: flex;
-            justify-content: center;
-            gap: 24px;
+            gap: 20px;
             flex-wrap: wrap;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 16px;
-            background: #ffffff;
-            border-radius: 8px;
-            border: 1px solid #e5e5e7;
+            gap: 8px;
         }
 
         .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
         }
 
         .legend-label {
             font-size: 13px;
-            font-weight: 500;
-            color: #1d1d1f;
+            color: var(--muted);
         }
 
         #network {
             width: 100%;
             height: 700px;
-            border: 1px solid #e5e5e7;
-            border-radius: 12px;
-            margin-bottom: 32px;
-            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            margin-bottom: 40px;
+            background: var(--bg);
+        }
+
+        /* vis-network ships a light tooltip. */
+        div.vis-tooltip {
+            padding: 8px 10px;
+            border: 1px solid var(--line-strong);
+            border-radius: 6px;
+            background: var(--surface);
+            box-shadow: none;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 13px;
+            line-height: 1.6;
         }
 
         .account-table {
-            background: #ffffff;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
-            border: 1px solid #e5e5e7;
-            margin-bottom: 32px;
+            border: 1px solid var(--line);
+            margin-bottom: 40px;
         }
 
         .account-table h3 {
-            background: #1d1d1f;
-            color: #ffffff;
-            padding: 20px 28px;
+            padding: 16px 20px;
             margin: 0;
-            font-size: 20px;
+            border-bottom: 1px solid var(--line);
+            color: var(--fg);
+            font-size: 16px;
             font-weight: 600;
         }
 
         .table-container {
             max-height: 500px;
-            overflow-y: auto;
+            overflow: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--line-strong) transparent;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            font-variant-numeric: tabular-nums;
         }
 
         thead {
-            background: #f5f5f7;
+            background: var(--surface);
             position: sticky;
             top: 0;
             z-index: 10;
         }
 
         th {
-            padding: 16px 20px;
+            padding: 12px 20px;
             text-align: left;
-            font-weight: 600;
-            color: #1d1d1f;
-            border-bottom: 1px solid #e5e5e7;
+            font-weight: 500;
+            color: var(--muted);
+            border-bottom: 1px solid var(--line);
             font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         td {
-            padding: 16px 20px;
-            border-bottom: 1px solid #f5f5f7;
-            font-size: 15px;
-            color: #1d1d1f;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--line);
+            font-size: 14px;
+            color: var(--text);
+            white-space: nowrap;
         }
 
-        tr:hover {
-            background: #fbfbfd;
+        tbody tr:hover {
+            background: var(--surface);
         }
 
         .status-badge {
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 3px 9px;
+            border-radius: 4px;
             font-size: 12px;
             font-weight: 600;
             display: inline-block;
+            color: #000;
         }
 
         .status-normal {
             background: #34C759;
-            color: #ffffff;
         }
 
         .status-half {
             background: #FF9500;
-            color: #ffffff;
         }
 
         .status-dead {
             background: #FF3B30;
-            color: #ffffff;
         }
 
         .export-section {
@@ -423,67 +449,65 @@
             gap: 24px;
         }
 
-        .export-card {
-            background: #fbfbfd;
-            padding: 28px;
-            border-radius: 12px;
-            border: 1px solid #e5e5e7;
-        }
-
         .export-card h4 {
-            margin-bottom: 16px;
-            color: #1d1d1f;
-            font-size: 17px;
-            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 500;
         }
 
         textarea {
+            display: block;
             width: 100%;
-            padding: 16px;
-            border: 1px solid #d2d2d7;
-            border-radius: 10px;
-            font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+            padding: 14px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
             font-size: 12px;
             resize: vertical;
             min-height: 200px;
-            background: #ffffff;
-            color: #1d1d1f;
+            background: var(--surface);
+            color: var(--text);
             line-height: 1.6;
+            scrollbar-width: thin;
+            scrollbar-color: var(--line-strong) transparent;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #007AFF;
-            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+            border-color: var(--line-strong);
         }
 
         .btn-copy {
             width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            background: #007AFF;
-            color: #ffffff;
-            font-weight: 600;
+            padding: 11px;
+            border: 1px solid var(--line-strong);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--fg);
+            font: inherit;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             margin-top: 12px;
-            transition: all 0.2s ease;
-            font-size: 15px;
+            transition: border-color 0.15s;
         }
 
         .btn-copy:hover {
-            background: #0051D5;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+            border-color: var(--fg);
         }
 
-        .btn-copy:active {
-            transform: translateY(0);
+        @media (max-width: 720px) {
+            body { padding: 28px 20px 48px; }
+            .back-link { margin-bottom: 40px; }
+            .controls, .export-section { grid-template-columns: 1fr; }
+            #network { height: 480px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <a class="back-link" href="/">White</a>
         <h1>Web3反女巫邀请构造器（撸毛必备）</h1>
         <p class="subtitle">
             基于真实社交网络特征的智能算法，通过幂律分布、随机深度优先、全层级流失模拟和时间维度建模，最大化收益同时规避女巫检测
@@ -906,22 +930,22 @@
         function displayMetrics(metrics) {
             document.getElementById('metricsGrid').innerHTML = `
                 <div class="metric-item">
-                    <strong>平均邀请数</strong> ${metrics.avgInvites} <small style="color: #86868b;">(真实≈1-2)</small>
+                    <strong>平均邀请数</strong> ${metrics.avgInvites} <small>(真实≈1-2)</small>
                 </div>
                 <div class="metric-item">
-                    <strong>邀请数标准差</strong> ${metrics.stdInvites} <small style="color: #86868b;">(越大越真实)</small>
+                    <strong>邀请数标准差</strong> ${metrics.stdInvites} <small>(越大越真实)</small>
                 </div>
                 <div class="metric-item">
-                    <strong>超限账号</strong> ${metrics.violations} <small style="color: #86868b;">(必须=0)</small>
+                    <strong>超限账号</strong> ${metrics.violations} <small>(必须=0)</small>
                 </div>
                 <div class="metric-item">
-                    <strong>Gini系数</strong> ${metrics.giniCoef} <small style="color: #86868b;">(0.5-0.7最佳)</small>
+                    <strong>Gini系数</strong> ${metrics.giniCoef} <small>(0.5-0.7最佳)</small>
                 </div>
                 <div class="metric-item">
-                    <strong>零邀请账号</strong> ${metrics.zeroInviters} <small style="color: #86868b;">(越多越真实)</small>
+                    <strong>零邀请账号</strong> ${metrics.zeroInviters} <small>(越多越真实)</small>
                 </div>
                 <div class="metric-item">
-                    <strong>最大深度</strong> ${metrics.maxLevel} <small style="color: #86868b;">(不规则最好)</small>
+                    <strong>最大深度</strong> ${metrics.maxLevel} <small>(不规则最好)</small>
                 </div>
             `;
         }
@@ -945,7 +969,7 @@
                 label: `${acc.account}`,
                 color: colors[acc.status],
                 size: 15 + acc.reward / 50,
-                font: {color: '#ffffff', size: 11, bold: true},
+                font: {color: '#000000', size: 11, bold: true},
                 title: `账号${acc.account}<br>状态: ${acc.status}<br>层级: ${acc.level}<br>收益: ${acc.reward}`,
                 borderWidth: 2,
                 borderWidthSelected: 3
@@ -955,7 +979,7 @@
                 from: acc.inviter,
                 to: acc.account,
                 arrows: 'to',
-                color: {color: '#d2d2d7', opacity: 0.6},
+                color: {color: '#a3a3a3', opacity: 0.7},
                 width: 1.5,
                 smooth: {type: 'cubicBezier'}
             }));

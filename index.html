@@ -4,82 +4,46 @@ title: Home
 description: "White's Blog — 专注逆向工程、JSVMP 分析、验证码协议解析与 Web Scraping 技术分享。深入浅出，有手就行。"
 ---
 
-<!-- Featured Articles Section -->
-<section class="featured-articles">
-  <h2 class="section-title">Featured Articles</h2>
-  <div class="article-list">
-    {% assign sorted_posts = site.posts | sort: 'date' | reverse %}
-    {% for post in sorted_posts limit:5 %}
-    <a href="{{ post.url | relative_url }}" class="article-link">
-      <article class="article-item">
-        <h3 class="article-title">
-          {{ post.title }}
-        </h3>
-        <div class="article-meta">
-          {{ post.date | date: "%Y年%m月%d日" }}
-          {% if post.categories %}
-          - {{ post.categories | join: ", " }}
-          {% endif %}
-        </div>
-        <div class="arrow-icon"></div>
-      </article>
-    </a>
-    {% endfor %}
-
-    {% if site.posts.size == 0 %}
-    <article class="article-item">
-      <h3 class="article-title">
-        <a href="#">Welcome to White's Garden</a>
-      </h3>
-      <div class="article-meta">
-        Coming Soon...
-      </div>
-      <div class="arrow-icon"></div>
-    </article>
-    {% endif %}
+<section class="hero">
+  <blockquote class="hero-quote">
+    <p>What I cannot create,<br>I do not understand.</p>
+    <footer>— Richard Feynman</footer>
+  </blockquote>
+  <div class="hero-aside">
+    <img
+      class="hero-photo"
+      src="{{ '/assets/images/feynman.jpg' | relative_url }}"
+      alt="Richard Feynman"
+      width="440"
+      height="440"
+    />
+    <!-- Icon shapes from Simple Icons (CC0), inlined so they need no request. -->
+    <div class="hero-social">
+      <a href="https://x.com/holaawhite" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" title="X (Twitter)">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+      </a>
+      <a href="https://t.me/haloowhite" target="_blank" rel="noopener noreferrer" aria-label="Telegram" title="Telegram">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      </a>
+    </div>
   </div>
 </section>
 
-<!-- Tools Section -->
-<section class="featured-articles">
-  <h2 class="section-title">Tools & Products</h2>
-  <div class="article-list">
-    <a href="https://astify.dev" target="_blank" class="article-link">
-      <article class="article-item">
-        <h3 class="article-title">
-          ASTify.dev
-        </h3>
-        <div class="article-meta">
-          在线工具 - JavaScript AST 反混淆平台
-        </div>
-        <div class="arrow-icon"></div>
-      </article>
-    </a>
-    <a href="https://tweet.haloowhite.com/" target="_blank" class="article-link">
-      <article class="article-item">
-        <h3 class="article-title">
-          推文折叠预览工具
-        </h3>
-        <div class="article-meta">
-          在线工具 - 推特内容预览与折叠显示
-        </div>
-        <div class="arrow-icon"></div>
-      </article>
-    </a>
-  </div>
+<!-- Every post, grouped by year. The same list /archive/ renders. -->
+<section class="section">
+{% include post-list.html %}
 </section>
 
 <!-- About Section -->
-<section class="about-section">
+<section class="section about">
   <h2 class="section-title">About White</h2>
-  <div class="about-content">
-    <p>"What I cannot create I do not understand" — Richard Feynman</p>
+  <div class="prose">
+    <p class="lead">{{ site.tagline }}</p>
 
     <p>我很喜欢费曼，并且我也坚信最好的学习方式是通过实践和分享。在博客中我将分享我当前所感兴趣专注的任何内容，无论是技术也好，亦或是一些书籍或感想，内容不局限，形式不拘泥。</p>
 
     <p>希望通过输出倒逼输入的形式，让我可以更专注我所感兴趣的任何东西，而不只是一知半解。</p>
 
-    <p>— White, 2025.7.21</p>
-
+    <p class="signature">— White, 2025.7.21</p>
   </div>
 </section>
