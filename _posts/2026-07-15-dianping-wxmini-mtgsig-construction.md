@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "有手就行系列——大众点评 mtgsig 构造（微信小程序 wx-jsguard 纯算）"
+title: "有手就行系列：大众点评 mtgsig 构造（微信小程序 wx-jsguard 纯算）"
 date: 2026-07-15
 categories: [逆向, 小程序]
 tags: [有手就行系列, 逆向, 大众点评, mtgsig, 微信小程序, jsguard, MurmurHash2, 纯算]

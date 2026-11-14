@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "有手就行系列——抖音 a_bogus 纯算构造（bdms 1.0.1.19 完整逆向）"
+title: "有手就行系列：抖音 a_bogus 纯算构造（bdms 1.0.1.19 完整逆向）"
 date: 2026-04-15
 categories: [JSVMP, 逆向]
 tags: [有手就行系列, 逆向, JSVMP, 抖音, a_bogus, 纯算, SM3, RC4]

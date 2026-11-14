@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "有手就行系列——贝壳 iOS 越狱检测绕过与 API 双签名纯算"
+title: "有手就行系列：贝壳 iOS 越狱检测绕过与 API 双签名纯算"
 date: 2026-09-09
 categories: [逆向, iOS]
 tags: [有手就行系列, 逆向, iOS, frida, 贝壳, 链家, JGBSDK, HMAC-SHA256, SHA1]
