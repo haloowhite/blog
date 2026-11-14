@@ -1,81 +1,75 @@
-// Code block copy functionality
-document.addEventListener('DOMContentLoaded', function() {
-    // Add copy buttons to all code blocks (div containers only, not inline code)
-    // const codeBlocks = document.querySelectorAll('div.highlighter-rouge');
-    //
-    // codeBlocks.forEach(function(codeBlock) {
-    //     // Create copy button
-    //     const copyBtn = document.createElement('button');
-    //     copyBtn.className = 'copy-btn';
-    //     copyBtn.textContent = 'Copy';
-    //     copyBtn.setAttribute('aria-label', 'Copy code to clipboard');
-    //
-    //     // Add copy button to code block
-    //     codeBlock.appendChild(copyBtn);
-    //
-    //     // Add click event listener
-    //     copyBtn.addEventListener('click', function() {
-    //         const code = codeBlock.querySelector('code');
-    //         if (code) {
-    //             copyToClipboard(code.textContent, copyBtn);
-    //         }
-    //     });
-    // });
-    
-    // Copy to clipboard function
-    function copyToClipboard(text, button) {
+// Adds a copy button to every fenced code block.
+// Inline code also carries .highlighter-rouge, so only the div form is matched.
+(function () {
+    function copyText(text) {
         if (navigator.clipboard && window.isSecureContext) {
-            // Modern clipboard API
-            navigator.clipboard.writeText(text).then(function() {
-                showCopySuccess(button);
-            }).catch(function(err) {
-                console.error('Failed to copy text: ', err);
-                fallbackCopyTextToClipboard(text, button);
-            });
-        } else {
-            // Fallback for older browsers
-            fallbackCopyTextToClipboard(text, button);
+            return navigator.clipboard.writeText(text);
         }
-    }
-    
-    // Fallback copy method
-    function fallbackCopyTextToClipboard(text, button) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        
-        // Avoid scrolling to bottom
-        textArea.style.top = '0';
-        textArea.style.left = '0';
-        textArea.style.position = 'fixed';
-        textArea.style.opacity = '0';
-        
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        
-        try {
-            const successful = document.execCommand('copy');
-            if (successful) {
-                showCopySuccess(button);
-            } else {
-                console.error('Fallback: Copying text command was unsuccessful');
+
+        // Fallback for http:// and older browsers.
+        return new Promise(function (resolve, reject) {
+            var area = document.createElement('textarea');
+            area.value = text;
+            area.setAttribute('readonly', '');
+            area.style.position = 'fixed';
+            area.style.top = '0';
+            area.style.left = '0';
+            area.style.opacity = '0';
+            document.body.appendChild(area);
+            area.select();
+            try {
+                document.execCommand('copy') ? resolve() : reject(new Error('copy command failed'));
+            } catch (err) {
+                reject(err);
+            } finally {
+                document.body.removeChild(area);
             }
-        } catch (err) {
-            console.error('Fallback: Oops, unable to copy', err);
-        }
-        
-        document.body.removeChild(textArea);
+        });
     }
-    
-    // Show copy success feedback
-    function showCopySuccess(button) {
-        const originalText = button.textContent;
-        button.textContent = 'Copied!';
-        button.classList.add('copied');
-        
-        setTimeout(function() {
-            button.textContent = originalText;
-            button.classList.remove('copied');
-        }, 2000);
+
+    function addButton(block) {
+        var code = block.querySelector('pre code');
+        if (!code) return;
+
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy';
+        button.textContent = 'Copy';
+
+        var timer;
+        button.addEventListener('click', function () {
+            copyText(code.textContent).then(function () {
+                button.textContent = 'Copied';
+            }, function () {
+                button.textContent = 'Failed';
+            }).then(function () {
+                clearTimeout(timer);
+                timer = setTimeout(function () {
+                    button.textContent = 'Copy';
+                }, 1600);
+            });
+        });
+
+        block.appendChild(button);
     }
-});
+
+    // Fences in a language Rouge doesn't know render as a bare <pre>; give
+    // them the same wrapper so the button has something to anchor to.
+    function wrapBare(pre) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'highlighter-rouge';
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+    }
+
+    function init() {
+        document.querySelectorAll('.prose > pre').forEach(wrapBare);
+        document.querySelectorAll('div.highlighter-rouge').forEach(addButton);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
