@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "有手就行系列——抖音最新bdms_1.0.1.19_fix参数构造a_bogus"
+title: "有手就行系列：抖音最新bdms_1.0.1.19_fix参数构造a_bogus"
 date: 2025-08-18
 categories: [JSVMP, 逆向]
 tags: [有手就行系列, 逆向, JSVMP, 抖音, a_bogus, 补环境]

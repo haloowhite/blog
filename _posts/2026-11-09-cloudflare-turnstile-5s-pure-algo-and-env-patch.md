@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "有手就行系列——Cloudflare Turnstile / 5s 盾 2026 下半年版：纯算（Rust）与补环境两条路线全拆解"
+title: "有手就行系列：Cloudflare Turnstile / 5s 盾 2026 下半年版：纯算（Rust）与补环境两条路线全拆解"
 date: 2026-11-09
 categories: [逆向, Cloudflare]
 tags: [有手就行系列, 逆向, Cloudflare, Turnstile, 5s盾, 纯算, Rust, 补环境, JSVMP, TLS指纹, happy-dom]
@@ -18,7 +18,7 @@ faq:
 
 ## 0、背景介绍
 
-今年 4 月写过一篇《有手就行系列——Cloudflare 5s 盾逆向实战（AST 反混淆 + 加密还原）》，从请求链路、AST 反混淆到 LZW/TEA/RSA 还原都拆了一遍。那篇的结论是：协议方案能做，但跟 build 很累；最后说 JSVMP 的部分“后续单独写”，这篇算是补上。
+今年 4 月写过一篇《有手就行系列：Cloudflare 5s 盾逆向实战（AST 反混淆 + 加密还原）》，从请求链路、AST 反混淆到 LZW/TEA/RSA 还原都拆了一遍。那篇的结论是：协议方案能做，但跟 build 很累；最后说 JSVMP 的部分“后续单独写”，这篇算是补上。
 
 半年过去，Cloudflare 又变了不少：5 秒盾的 VM 换了，字符串表和 opcode 每个 build 都在轮换，Turnstile 也分出了 managed / non-interactive / invisible 几种模式，`cf_clearance` 除了绑 IP 和 UA，还要和 TLS/HTTP2 指纹对得上。继续用老办法一个个补 DOM 属性，维护成本只会越来越高。
 
@@ -446,7 +446,7 @@ challenge_page_answers  挑战页专用答案
 
 ### 4.10 和旧版文章对一下
 
-如果你看过我之前那篇《有手就行系列——Cloudflare 5s 盾逆向实战（AST 反混淆 + 加密还原）》，里面写的是 LZW + TEA-CTR + 固定 RSA 密钥。那是 2026-04 的 build，现在已经不能照搬。把两版放在一起看，变化大致是：
+如果你看过我之前那篇《有手就行系列：Cloudflare 5s 盾逆向实战（AST 反混淆 + 加密还原）》，里面写的是 LZW + TEA-CTR + 固定 RSA 密钥。那是 2026-04 的 build，现在已经不能照搬。把两版放在一起看，变化大致是：
 
 | 项 | 旧版（2026-04） | 当前（2026-10/11） |
 | --- | --- | --- |
